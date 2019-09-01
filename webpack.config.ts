@@ -4,15 +4,11 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 
 import * as path from "path";
 import * as webpack from "webpack";
-import * as HtmlWebpackPlugin from "html-webpack-plugin";
-import * as MiniCssExtractPlugin from "mini-css-extract-plugin";
-import * as CopyWebpackPlugin from "copy-webpack-plugin";
-
-// TODO: add types for these packages:
-// eslint-disable-next-line
-const WebpackCdnPlugin = require("webpack-cdn-plugin");
-// eslint-disable-next-line
-const GoogleFontsPlugin = require("@beyonk/google-fonts-webpack-plugin");
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import WebpackCdnPlugin from "webpack-cdn-plugin";
+import GoogleFontsPlugin from "@beyonk/google-fonts-webpack-plugin";
 
 const isRelease = process.argv.includes("--release");
 

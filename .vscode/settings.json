@@ -1,7 +1,8 @@
 {
   "editor.formatOnSave": true,
-  "eslint.autoFixOnSave": true,
   "files.insertFinalNewline": true,
+  "eslint.run": "onSave",
+  "eslint.autoFixOnSave": true,
   "eslint.validate": [
     { "language": "javascript", "autoFix": true },
     { "language": "javascriptreact", "autoFix": true },

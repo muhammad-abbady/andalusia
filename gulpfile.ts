@@ -3,15 +3,10 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 **********************************************************************************************/
 
 import * as gulp from "gulp";
-import * as del from "del";
-
-// TODO: add types for these packages:
-// eslint-disable-next-line
-const eslint = require("gulp-eslint");
-// eslint-disable-next-line
-const run = require("gulp-run-command").default;
-// eslint-disable-next-line
-const prettier = require("gulp-prettier");
+import del from "del";
+import * as prettier from "gulp-prettier";
+import eslint from "gulp-eslint";
+import run from "gulp-run-command";
 
 gulp.task("clean", () => {
   return del(["build"]);
