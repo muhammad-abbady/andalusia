@@ -1,3 +1,7 @@
+/**********************************************************************************************
+Licensed under the MIT License. See LICENSE file in the project root for license information.
+**********************************************************************************************/
+
 import * as React from "react";
 
 // reactstrap components
@@ -5,7 +9,7 @@ import { Container, Row, Col } from "reactstrap";
 
 // core components
 
-function Images() {
+const Images: React.FC = () => {
   return (
     <>
       <div className="section section-images">
@@ -36,6 +40,6 @@ function Images() {
       </div>
     </>
   );
-}
+};
 
 export default Images;

@@ -1,3 +1,7 @@
+/**********************************************************************************************
+Licensed under the MIT License. See LICENSE file in the project root for license information.
+**********************************************************************************************/
+
 import * as React from "react";
 
 // reactstrap components
@@ -14,28 +18,22 @@ import {
   NavLink,
   Nav,
   Container,
-  UncontrolledTooltip
+  UncontrolledTooltip,
 } from "reactstrap";
 
-function IndexNavbar() {
+const IndexNavbar: React.FC = () => {
   const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   React.useEffect(() => {
-    const updateNavbarColor = () => {
-      if (
-        document.documentElement.scrollTop > 399 ||
-        document.body.scrollTop > 399
-      ) {
+    const updateNavbarColor = (): void => {
+      if (document.documentElement.scrollTop > 399 || document.body.scrollTop > 399) {
         setNavbarColor("");
-      } else if (
-        document.documentElement.scrollTop < 400 ||
-        document.body.scrollTop < 400
-      ) {
+      } else if (document.documentElement.scrollTop < 400 || document.body.scrollTop < 400) {
         setNavbarColor("navbar-transparent");
       }
     };
     window.addEventListener("scroll", updateNavbarColor);
-    return function cleanup() {
+    return function cleanup(): void {
       window.removeEventListener("scroll", updateNavbarColor);
     };
   });
@@ -77,20 +75,10 @@ function IndexNavbar() {
               <span className="navbar-toggler-bar bottom-bar"></span>
             </button>
           </div>
-          <Collapse
-            className="justify-content-end"
-            isOpen={collapseOpen}
-            navbar
-          >
+          <Collapse className="justify-content-end" isOpen={collapseOpen} navbar>
             <Nav navbar>
               <UncontrolledDropdown nav>
-                <DropdownToggle
-                  caret
-                  color="default"
-                  href="#pablo"
-                  nav
-                  onClick={e => e.preventDefault()}
-                >
+                <DropdownToggle caret color="default" href="#pablo" nav onClick={e => e.preventDefault()}>
                   <i className="now-ui-icons design_app mr-1"></i>
                   <p>Components</p>
                 </DropdownToggle>
@@ -119,22 +107,14 @@ function IndexNavbar() {
                   <i className="now-ui-icons arrows-1_share-66 mr-1"></i>
                   <p>Upgrade to PRO</p>
                 </Button>
-                <UncontrolledTooltip target="#upgrade-to-pro">
-                  Cooming soon!
-                </UncontrolledTooltip>
+                <UncontrolledTooltip target="#upgrade-to-pro">Cooming soon!</UncontrolledTooltip>
               </NavItem>
               <NavItem>
-                <NavLink
-                  href="https://twitter.com/CreativeTim?ref=creativetim"
-                  target="_blank"
-                  id="twitter-tooltip"
-                >
+                <NavLink href="https://twitter.com/CreativeTim?ref=creativetim" target="_blank" id="twitter-tooltip">
                   <i className="fab fa-twitter"></i>
                   <p className="d-lg-none d-xl-none">Twitter</p>
                 </NavLink>
-                <UncontrolledTooltip target="#twitter-tooltip">
-                  Follow us on Twitter
-                </UncontrolledTooltip>
+                <UncontrolledTooltip target="#twitter-tooltip">Follow us on Twitter</UncontrolledTooltip>
               </NavItem>
               <NavItem>
                 <NavLink
@@ -145,9 +125,7 @@ function IndexNavbar() {
                   <i className="fab fa-facebook-square"></i>
                   <p className="d-lg-none d-xl-none">Facebook</p>
                 </NavLink>
-                <UncontrolledTooltip target="#facebook-tooltip">
-                  Like us on Facebook
-                </UncontrolledTooltip>
+                <UncontrolledTooltip target="#facebook-tooltip">Like us on Facebook</UncontrolledTooltip>
               </NavItem>
               <NavItem>
                 <NavLink
@@ -158,9 +136,7 @@ function IndexNavbar() {
                   <i className="fab fa-instagram"></i>
                   <p className="d-lg-none d-xl-none">Instagram</p>
                 </NavLink>
-                <UncontrolledTooltip target="#instagram-tooltip">
-                  Follow us on Instagram
-                </UncontrolledTooltip>
+                <UncontrolledTooltip target="#instagram-tooltip">Follow us on Instagram</UncontrolledTooltip>
               </NavItem>
             </Nav>
           </Collapse>
@@ -168,6 +144,6 @@ function IndexNavbar() {
       </Navbar>
     </>
   );
-}
+};
 
 export default IndexNavbar;

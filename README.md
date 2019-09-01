@@ -1,2 +1,3 @@
 # andalusia
-Beautiful works of art based on ancient Middle Eastern geometry.
+
+Beautiful works of art based on ancient geometry.

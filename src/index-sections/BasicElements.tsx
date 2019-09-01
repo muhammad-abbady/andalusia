@@ -1,3 +1,7 @@
+/**********************************************************************************************
+Licensed under the MIT License. See LICENSE file in the project root for license information.
+**********************************************************************************************/
+
 import * as React from "react";
 import * as Slider from "nouislider";
 
@@ -12,37 +16,31 @@ import {
   InputGroup,
   Container,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 
 // core components
 
-function BasicElements() {
+const BasicElements: React.FC = () => {
   const [leftFocus, setLeftFocus] = React.useState(false);
   const [rightFocus, setRightFocus] = React.useState(false);
   React.useEffect(() => {
-    if (
-      !document
-        .getElementById("sliderRegular")!
-        .classList.contains("noUi-target")
-    ) {
-      Slider.create(document.getElementById("sliderRegular")!, {
+    const sliderRegular = document.getElementById("sliderRegular");
+    if (sliderRegular && !sliderRegular.classList.contains("noUi-target")) {
+      Slider.create(sliderRegular, {
         start: [50],
         connect: [true, false],
         step: 0.5,
-        range: { min: 0, max: 100 }
+        range: { min: 0, max: 100 },
       });
     }
-    if (
-      !document
-        .getElementById("sliderDouble")!
-        .classList.contains("noUi-target")
-    ) {
-      Slider.create(document.getElementById("sliderDouble")!, {
+    const sliderDouble = document.getElementById("sliderDouble");
+    if (sliderDouble && !sliderDouble.classList.contains("noUi-target")) {
+      Slider.create(sliderDouble, {
         start: [20, 80],
         connect: [false, true, false],
         step: 1,
-        range: { min: 0, max: 100 }
+        range: { min: 0, max: 100 },
       });
     }
   });
@@ -127,29 +125,17 @@ function BasicElements() {
             <Row>
               <Col lg="3" sm="6">
                 <FormGroup>
-                  <Input
-                    defaultValue=""
-                    placeholder="Regular"
-                    type="text"
-                  ></Input>
+                  <Input defaultValue="" placeholder="Regular" type="text"></Input>
                 </FormGroup>
               </Col>
               <Col lg="3" sm="6">
                 <FormGroup className="has-success">
-                  <Input
-                    className="form-control-success"
-                    defaultValue="Success"
-                    type="text"
-                  ></Input>
+                  <Input className="form-control-success" defaultValue="Success" type="text"></Input>
                 </FormGroup>
               </Col>
               <Col lg="3" sm="6">
                 <FormGroup className="has-danger">
-                  <Input
-                    className="form-control-danger"
-                    defaultValue="Error Input"
-                    type="email"
-                  ></Input>
+                  <Input className="form-control-danger" defaultValue="Error Input" type="email"></Input>
                 </FormGroup>
               </Col>
               <Col lg="3" sm="6">
@@ -221,12 +207,7 @@ function BasicElements() {
               <p className="category">Radios</p>
               <FormGroup check className="form-check-radio">
                 <Label check>
-                  <Input
-                    defaultValue="option1"
-                    id="exampleRadios1"
-                    name="exampleRadios"
-                    type="radio"
-                  ></Input>
+                  <Input defaultValue="option1" id="exampleRadios1" name="exampleRadios" type="radio"></Input>
                   <span className="form-check-sign"></span>
                   Radio is off
                 </Label>
@@ -246,13 +227,7 @@ function BasicElements() {
               </FormGroup>
               <FormGroup check className="form-check-radio" disabled>
                 <Label check>
-                  <Input
-                    defaultValue="option3"
-                    disabled
-                    id="exampleRadios2"
-                    name="exampleRadios1"
-                    type="radio"
-                  ></Input>
+                  <Input defaultValue="option3" disabled id="exampleRadios2" name="exampleRadios1" type="radio"></Input>
                   <span className="form-check-sign"></span>
                   Disabled radio is off
                 </Label>
@@ -287,6 +262,6 @@ function BasicElements() {
       </div>
     </>
   );
-}
+};
 
 export default BasicElements;

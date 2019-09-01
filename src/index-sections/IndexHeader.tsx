@@ -1,18 +1,23 @@
+/**********************************************************************************************
+Licensed under the MIT License. See LICENSE file in the project root for license information.
+**********************************************************************************************/
+
 import * as React from "react";
 
 // reactstrap components
 import { Container } from "reactstrap";
 // core components
 
-function IndexHeader() {
-  let pageHeader = React.createRef<HTMLDivElement>();
+const IndexHeader: React.FC = () => {
+  const pageHeader = React.createRef<HTMLDivElement>();
 
   React.useEffect(() => {
     if (window.innerWidth > 991) {
-      const updateScroll = () => {
-        let windowScrollTop = window.pageYOffset / 3;
-        pageHeader.current!.style.transform =
-          "translate3d(0," + windowScrollTop + "px,0)";
+      const updateScroll = (): void => {
+        if (pageHeader.current) {
+          const windowScrollTop = window.pageYOffset / 3;
+          pageHeader.current.style.transform = "translate3d(0," + windowScrollTop + "px,0)";
+        }
       };
       window.addEventListener("scroll", updateScroll);
       return function cleanup() {
@@ -27,8 +32,7 @@ function IndexHeader() {
         <div
           className="page-header-image"
           style={{
-            backgroundImage:
-              "url(https://demos.creative-tim.com/now-ui-kit-react/static/media/header.ffcc99c4.jpg)"
+            backgroundImage: "url(https://demos.creative-tim.com/now-ui-kit-react/static/media/header.ffcc99c4.jpg)",
           }}
           ref={pageHeader}
         ></div>
@@ -44,7 +48,7 @@ function IndexHeader() {
           </div>
           <h6 className="category category-absolute">
             Designed by{" "}
-            <a href="http://invisionapp.com/?ref=creativetim" target="_blank">
+            <a href="http://invisionapp.com/?ref=creativetim" target="_blank" rel="noreferrer noopener">
               <img
                 alt="..."
                 className="invision-logo"
@@ -52,10 +56,7 @@ function IndexHeader() {
               ></img>
             </a>
             . Coded by{" "}
-            <a
-              href="https://www.creative-tim.com?ref=nukr-index-header"
-              target="_blank"
-            >
+            <a href="https://www.creative-tim.com?ref=nukr-index-header" target="_blank" rel="noreferrer noopener">
               <img
                 alt="..."
                 className="creative-tim-logo"
@@ -68,6 +69,6 @@ function IndexHeader() {
       </div>
     </>
   );
-}
+};
 
 export default IndexHeader;
