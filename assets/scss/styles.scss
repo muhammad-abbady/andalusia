@@ -1,0 +1,25 @@
+@import "./now-ui-kit";
+
+.home-background-image {
+  background-image: url(../images/home-background.png);
+}
+
+.index-page {
+  .home-page-buttons > a {
+    margin-left: 20px;
+  }
+
+  .home-page-buttons > a:first-child {
+    margin-left: 0px;
+  }
+
+  .btn-white span {
+    font-size: 1.5em;
+    margin-left: 10px;
+  }
+
+  .btn-white {
+    @include btn-styles(white, white);
+    color: #444444;
+  }
+}

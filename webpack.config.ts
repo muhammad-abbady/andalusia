@@ -33,6 +33,11 @@ const cdnModules = [
     cssOnly: true,
     style: isRelease ? "dist/css/bootstrap.min.css" : "dist/css/bootstrap.css",
   },
+  {
+    name: "@fortawesome/fontawesome-free",
+    style: isRelease ? "css/all.min.css" : "css/all.css",
+    path: isRelease ? "js/all.min.js" : "js/all.js",
+  },
 ];
 
 const configuration: webpack.Configuration = {
@@ -40,9 +45,17 @@ const configuration: webpack.Configuration = {
   entry: "./src/index.tsx",
   output: {
     filename: "bundle.js",
-    path: path.resolve(__dirname, "build"),
+    path: path.join(__dirname, "build"),
   },
   devtool: "source-map",
+  devServer: isRelease
+    ? undefined
+    : {
+        hot: true,
+        open: true,
+        overlay: true,
+        writeToDisk: true,
+      },
   module: {
     rules: [
       {
@@ -72,6 +85,18 @@ const configuration: webpack.Configuration = {
           },
         ],
       },
+      {
+        test: /\.png$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]",
+              outputPath: "images",
+            },
+          },
+        ],
+      },
     ],
   },
   resolve: {
@@ -81,10 +106,10 @@ const configuration: webpack.Configuration = {
     new CopyWebpackPlugin(
       isRelease
         ? []
-        : cdnModules.map(mod => {
-            const file = `node_modules/${mod.name}/${mod.path || mod.style}`;
-            return { from: file, to: file };
-          }),
+        : cdnModules.map(mod => ({
+            from: path.join(__dirname, "node_modules", mod.name),
+            to: path.join("node_modules", mod.name),
+          })),
     ),
     new MiniCssExtractPlugin(),
     new webpack.ProvidePlugin({

@@ -4,11 +4,11 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Home from "./home";
+import { Home } from "./pages/home";
 import { Route, Switch, Redirect, HashRouter } from "react-router-dom";
 
 // Import assets
-import "../assets/scss/now-ui-kit.scss";
+import "../assets/scss/styles.scss";
 
 ReactDOM.render(
   <HashRouter>
