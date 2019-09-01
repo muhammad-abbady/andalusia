@@ -40,18 +40,6 @@
   transition: opacity 0.3s linear;
 }
 
-.form-check .form-check-sign::after {
-  font-family: "Nucleo Outline";
-  content: "\ea22";
-  top: 0px;
-  text-align: center;
-  font-size: 14px;
-  opacity: 0;
-  color: $dark-background;
-  border: 0;
-  background-color: inherit;
-}
-
 .form-check.disabled .form-check-label,
 .form-check.disabled .form-check-label {
   color: $dark-gray;

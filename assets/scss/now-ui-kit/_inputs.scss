@@ -80,17 +80,6 @@
 
 .has-success,
 .has-danger {
-  &:after {
-    font-family: "Nucleo Outline";
-    content: "\ea22";
-    display: inline-block;
-    position: absolute;
-    right: 20px;
-    top: 12px;
-    color: $success-color;
-    font-size: 11px;
-  }
-
   &.input-lg {
     &:after {
       font-size: 13px;

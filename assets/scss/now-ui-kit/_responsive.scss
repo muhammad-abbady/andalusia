@@ -64,18 +64,10 @@
     display: none;
   }
 
-  .section-nucleo-icons .container .row > [class*="col-"]:first-child {
-    text-align: center;
-  }
-
   .footer {
     .copyright {
       text-align: right;
     }
-  }
-
-  .section-nucleo-icons .icons-container {
-    margin-top: 65px;
   }
 
   .navbar-nav {
@@ -208,10 +200,6 @@
     }
   }
 
-  .section-nucleo-icons .icons-container {
-    margin: 0 0 0 auto;
-  }
-
   .dropdown-menu .dropdown-item {
     color: inherit;
     display: flex;
@@ -285,18 +273,6 @@
   .footer {
     .copyright {
       text-align: center;
-    }
-  }
-
-  .section-nucleo-icons {
-    .icons-container {
-      i {
-        font-size: 30px;
-
-        &:nth-child(6) {
-          font-size: 48px;
-        }
-      }
     }
   }
 
