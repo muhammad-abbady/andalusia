@@ -9,7 +9,7 @@ gulp.task("clean", function() {
 });
 
 gulp.task(
-  "watch",
+  "serve",
   gulp.parallel(run("yarn webpack --watch"), run("live-server ./build"))
 );
 

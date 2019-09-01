@@ -4,6 +4,7 @@ import * as HtmlWebpackPlugin from "html-webpack-plugin";
 
 // TODO: add types for these packages:
 const WebpackCdnPlugin = require("webpack-cdn-plugin");
+const GoogleFontsPlugin = require("@beyonk/google-fonts-webpack-plugin");
 
 const isRelease = process.argv.includes("--release");
 
@@ -19,15 +20,37 @@ const configuration: webpack.Configuration = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: "ts-loader",
-        exclude: /node_modules/
+        use: "ts-loader"
+      },
+      {
+        test: /\.scss$/,
+        use: ["style-loader", "css-loader", "sass-loader"]
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]",
+              outputPath: "fonts"
+            }
+          }
+        ]
       }
     ]
   },
   resolve: {
-    extensions: [".tsx", ".ts"]
+    extensions: [".tsx", ".ts", ".js"]
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      React: "react"
+    }),
+    new GoogleFontsPlugin({
+      local: false,
+      fonts: [{ family: "Montserrat", variants: ["400", "700", "200"] }]
+    }),
     new HtmlWebpackPlugin({
       minify: isRelease
         ? {
@@ -57,6 +80,20 @@ const configuration: webpack.Configuration = {
           path: isRelease
             ? "umd/react-dom.production.min.js"
             : "umd/react-dom.development.js"
+        },
+        {
+          name: "react-router-dom",
+          var: "ReactRouterDOM",
+          path: isRelease
+            ? "umd/react-router-dom.min.js"
+            : "umd/react-router-dom.js"
+        },
+        {
+          name: "bootstrap",
+          cssOnly: true,
+          style: isRelease
+            ? "dist/css/bootstrap.min.css"
+            : "dist/css/bootstrap.css"
         }
       ]
     })
