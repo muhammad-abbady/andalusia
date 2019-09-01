@@ -6,6 +6,7 @@ import * as path from "path";
 import * as webpack from "webpack";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
 import * as MiniCssExtractPlugin from "mini-css-extract-plugin";
+import * as CopyWebpackPlugin from "copy-webpack-plugin";
 
 // TODO: add types for these packages:
 // eslint-disable-next-line
@@ -14,6 +15,29 @@ const WebpackCdnPlugin = require("webpack-cdn-plugin");
 const GoogleFontsPlugin = require("@beyonk/google-fonts-webpack-plugin");
 
 const isRelease = process.argv.includes("--release");
+
+const cdnModules = [
+  {
+    name: "react",
+    var: "React",
+    path: isRelease ? "umd/react.production.min.js" : "umd/react.development.js",
+  },
+  {
+    name: "react-dom",
+    var: "ReactDOM",
+    path: isRelease ? "umd/react-dom.production.min.js" : "umd/react-dom.development.js",
+  },
+  {
+    name: "react-router-dom",
+    var: "ReactRouterDOM",
+    path: isRelease ? "umd/react-router-dom.min.js" : "umd/react-router-dom.js",
+  },
+  {
+    name: "bootstrap",
+    cssOnly: true,
+    style: isRelease ? "dist/css/bootstrap.min.css" : "dist/css/bootstrap.css",
+  },
+];
 
 const configuration: webpack.Configuration = {
   mode: isRelease ? "production" : "development",
@@ -58,12 +82,21 @@ const configuration: webpack.Configuration = {
     extensions: [".tsx", ".ts", ".js"],
   },
   plugins: [
+    new CopyWebpackPlugin(
+      isRelease
+        ? []
+        : cdnModules.map(mod => {
+            const file = `node_modules/${mod.name}/${mod.path || mod.style}`;
+            return { from: file, to: file };
+          }),
+    ),
     new MiniCssExtractPlugin(),
     new webpack.ProvidePlugin({
       React: "react",
     }),
     new GoogleFontsPlugin({
-      local: false,
+      path: "fonts/",
+      local: !isRelease,
       fonts: [{ family: "Montserrat", variants: ["400", "700", "200"] }],
     }),
     new HtmlWebpackPlugin({
@@ -81,28 +114,9 @@ const configuration: webpack.Configuration = {
       favicon: "assets/images/favicon.png",
     }),
     new WebpackCdnPlugin({
-      modules: [
-        {
-          name: "react",
-          var: "React",
-          path: isRelease ? "umd/react.production.min.js" : "umd/react.development.js",
-        },
-        {
-          name: "react-dom",
-          var: "ReactDOM",
-          path: isRelease ? "umd/react-dom.production.min.js" : "umd/react-dom.development.js",
-        },
-        {
-          name: "react-router-dom",
-          var: "ReactRouterDOM",
-          path: isRelease ? "umd/react-router-dom.min.js" : "umd/react-router-dom.js",
-        },
-        {
-          name: "bootstrap",
-          cssOnly: true,
-          style: isRelease ? "dist/css/bootstrap.min.css" : "dist/css/bootstrap.css",
-        },
-      ],
+      publicPath: "/node_modules",
+      prod: isRelease,
+      modules: cdnModules,
     }),
   ],
 };

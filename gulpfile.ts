@@ -33,7 +33,10 @@ gulp.task("prettier", () => {
 
 gulp.task("lint", gulp.parallel("eslint", "prettier"));
 
-gulp.task("serve", gulp.parallel(run("yarn webpack --watch"), run("live-server ./build")));
+gulp.task(
+  "serve",
+  gulp.series([run("yarn webpack"), gulp.parallel(run("yarn webpack --watch"), run("live-server ./build"))]),
+);
 
 gulp.task(
   "deploy",
