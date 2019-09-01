@@ -1,6 +1,7 @@
 import * as path from "path";
 import * as webpack from "webpack";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
+import * as MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 // TODO: add types for these packages:
 const WebpackCdnPlugin = require("webpack-cdn-plugin");
@@ -23,8 +24,15 @@ const configuration: webpack.Configuration = {
         use: "ts-loader"
       },
       {
-        test: /\.scss$/,
-        use: ["style-loader", "css-loader", "sass-loader"]
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          "css-loader",
+          "postcss-loader",
+          "sass-loader"
+        ]
       },
       {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
@@ -44,6 +52,7 @@ const configuration: webpack.Configuration = {
     extensions: [".tsx", ".ts", ".js"]
   },
   plugins: [
+    new MiniCssExtractPlugin(),
     new webpack.ProvidePlugin({
       React: "react"
     }),
