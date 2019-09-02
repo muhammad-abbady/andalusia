@@ -38,6 +38,11 @@ const cdnModules = [
     style: isRelease ? "css/all.min.css" : "css/all.css",
     path: isRelease ? "js/all.min.js" : "js/all.js",
   },
+  {
+    name: "two.js",
+    var: "Two",
+    path: isRelease ? "build/two.min.js" : "build/two.js",
+  },
 ];
 
 const configuration: webpack.Configuration = {

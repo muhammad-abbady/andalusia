@@ -6,7 +6,7 @@ import * as React from "react";
 import { Container, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 
-export class Home extends React.Component {
+export class HomePageComponent extends React.Component {
   public render(): React.ReactElement {
     return (
       <div className="index-page">

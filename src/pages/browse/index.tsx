@@ -3,9 +3,11 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 **********************************************************************************************/
 
 import * as React from "react";
-import { Container, Row, Col, Nav, NavLink, NavItem, Navbar, NavbarBrand, Collapse, Card, CardBody } from "reactstrap";
+import { Container, Row, Nav, NavLink, NavItem, Navbar, NavbarBrand, Collapse } from "reactstrap";
+import { DesignsCollection } from "../../designs/collection";
+import { DesignCardComponent } from "./design-card";
 
-export class Browse extends React.Component {
+export class BrowsePageComponent extends React.Component {
   public render(): React.ReactElement {
     return (
       <div className="inner-page">
@@ -27,11 +29,9 @@ export class Browse extends React.Component {
           <div className="section">
             <Container>
               <Row>
-                <Col className="ml-auto mr-auto" sm="6" md="4" lg="3">
-                  <Card>
-                    <CardBody>test</CardBody>
-                  </Card>
-                </Col>
+                {DesignsCollection.map((design, i) => (
+                  <DesignCardComponent key={i} design={design} />
+                ))}
               </Row>
             </Container>
           </div>
