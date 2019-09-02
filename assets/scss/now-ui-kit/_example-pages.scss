@@ -77,8 +77,7 @@
   }
 }
 
-// style for the profile page
-.profile-page {
+.inner-page {
   .page-header {
     min-height: 550px;
   }
@@ -206,7 +205,7 @@
 }
 
 .login-page,
-.profile-page {
+.inner-page {
   .page-header:before {
     position: absolute;
     z-index: 0;

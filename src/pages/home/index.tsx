@@ -18,7 +18,7 @@ export class Home extends React.Component {
                 <h1 className="h1-seo">Andalusia</h1>
                 <h3>Beautiful works of art based on ancient geometry.</h3>
                 <span className="home-page-buttons">
-                  <Link to="/browse">
+                  <Link to="/browse/">
                     <Button color="white" size="md">
                       <i className="fas fa-drafting-compass fa-2x" />
                       <span>Browse</span>
