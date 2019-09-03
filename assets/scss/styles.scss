@@ -1,25 +1,33 @@
+// Override defaults
+$primary-color: #2ca8ff !default;
+
+// Import toolkot
 @import "./now-ui-kit";
 
+// Rest of the stypes
 .home-background-image {
   background-image: url(../images/home-background.png);
 }
 
 .index-page {
-  .home-page-buttons > a {
-    margin-left: 20px;
-  }
+  .home-page-buttons {
+    > a {
+      margin-left: 20px;
+    }
 
-  .home-page-buttons > a:first-child {
-    margin-left: 0px;
-  }
+    > a:first-child {
+      margin-left: 0px;
+    }
 
-  .btn-white span {
-    font-size: 1.5em;
-    margin-left: 10px;
+    span {
+      font-size: 1.5em;
+      margin-left: 10px;
+    }
   }
+}
 
-  .btn-white {
-    @include btn-styles(white, white);
-    color: #444444;
+.inner-page {
+  .view-page-container {
+    width: 80vmin;
   }
 }

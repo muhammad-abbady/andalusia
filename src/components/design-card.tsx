@@ -3,12 +3,13 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 **********************************************************************************************/
 
 import * as React from "react";
-import { Col, Card, CardBody, CardHeader, CardTitle } from "reactstrap";
-import { BaseDesign } from "../../designs/base-design";
-import { CancellationToken } from "../../designs/cancellation-token";
+import { Card, CardBody, CardHeader, CardTitle } from "reactstrap";
+import { BaseDesign } from "../designs/base-design";
+import { CancellationToken } from "../designs/cancellation-token";
 
 interface DesignCardProps {
   readonly design: BaseDesign;
+  readonly speed: number;
 }
 
 export class DesignCardComponent extends React.Component<DesignCardProps> {
@@ -18,6 +19,10 @@ export class DesignCardComponent extends React.Component<DesignCardProps> {
   public constructor(props: DesignCardProps) {
     super(props);
     this.refreshScene = this.refreshScene.bind(this);
+  }
+
+  public componentDidUpdate(): void {
+    this.refreshScene();
   }
 
   public componentDidMount(): void {
@@ -32,18 +37,16 @@ export class DesignCardComponent extends React.Component<DesignCardProps> {
 
   public render(): React.ReactElement {
     return (
-      <Col className="pull-left" xs="12" sm="6" md="6" lg="3">
-        <Card>
-          <CardHeader className="text-center">
-            <CardTitle className="title-up" tag="h6">
-              {this.props.design.title}
-            </CardTitle>
-          </CardHeader>
-          <CardBody>
-            <div ref={this.sceneRef} />
-          </CardBody>
-        </Card>
-      </Col>
+      <Card>
+        <CardHeader className="text-center">
+          <CardTitle className="title-up" tag="h6">
+            {this.props.design.title}
+          </CardTitle>
+        </CardHeader>
+        <CardBody>
+          <div ref={this.sceneRef} />
+        </CardBody>
+      </Card>
     );
   }
 
@@ -61,7 +64,7 @@ export class DesignCardComponent extends React.Component<DesignCardProps> {
 
     // Start rendering
     this.token = new CancellationToken();
-    this.props.design.start(this.sceneRef.current, this.token);
+    this.props.design.start(this.sceneRef.current, this.props.speed, this.token);
   }
 
   private clearScene(): void {

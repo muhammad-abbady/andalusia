@@ -9,9 +9,9 @@ export abstract class BaseDesign {
   public abstract readonly url: string;
   public abstract readonly title: string;
 
-  protected abstract render(scene: Two, token: CancellationToken): Promise<void>;
+  protected abstract render(scene: Two, speed: number, token: CancellationToken): Promise<void>;
 
-  public start(element: HTMLElement, token: CancellationToken): void {
+  public start(element: HTMLElement, speed: number, token: CancellationToken): void {
     const bounds = element.getBoundingClientRect();
     const params: Two.ConstructorParams = {
       width: bounds.width,
@@ -24,7 +24,7 @@ export abstract class BaseDesign {
       token.checkForCancellation();
     });
 
-    this.render(scene, token).catch((error: Error) => {
+    this.render(scene, speed, token).catch((error: Error) => {
       if (error.message === RENDER_CANCELLATION_MESSAGE) {
         scene.clear();
       } else {

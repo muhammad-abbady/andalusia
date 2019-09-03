@@ -8,20 +8,24 @@ import { CancellationToken } from "../cancellation-token";
 import { sleep } from "../utils";
 
 export class DiagonalDesign extends BaseDesign {
-  public readonly url = "samples/diagonal";
+  public readonly url = "/samples/diagonal/";
   public readonly title = "Diagonal Design";
 
-  protected async render(scene: Two, token: CancellationToken): Promise<void> {
+  protected async render(scene: Two, speed: number, token: CancellationToken): Promise<void> {
     token.checkForCancellation();
 
     const from = new Two.Vector(10, 10);
     const to = new Two.Vector(scene.width - 10, scene.height - 10);
-    const change = new Two.Vector((to.x - from.x) / 100, (to.y - from.y) / 100);
-    const line = scene.makeLine(from.x, from.y, from.x, from.y);
+    const distanceX = to.x - from.x;
+    const distanceY = to.y - from.y;
 
-    for (let i = 0; i < 100; i++) {
+    const steps = 100;
+    const change = new Two.Vector(distanceX / steps, distanceY / steps);
+
+    const line = scene.makeLine(from.x, from.y, from.x, from.y);
+    for (let i = 0; i < steps; i++) {
       token.checkForCancellation();
-      await sleep(20);
+      await sleep(500 / speed);
       line.vertices[1].addSelf(change);
       scene.update();
     }

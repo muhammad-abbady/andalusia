@@ -19,13 +19,13 @@ export class HomePageComponent extends React.Component {
                 <h3>Beautiful works of art based on ancient geometry.</h3>
                 <span className="home-page-buttons">
                   <Link to="/browse/">
-                    <Button color="white" size="md">
+                    <Button color="primary" size="md">
                       <i className="fas fa-drafting-compass fa-2x" />
                       <span>Browse</span>
                     </Button>
                   </Link>
                   <a href="https://github.com/omartawfik/andalusia" target="_blank" rel="noreferrer noopener">
-                    <Button color="white" size="md">
+                    <Button color="primary" size="md">
                       <i className="fab fa-github fa-2x" />
                       <span>GitHub</span>
                     </Button>

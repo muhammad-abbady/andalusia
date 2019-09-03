@@ -110,7 +110,7 @@ const configuration: webpack.Configuration = {
     }),
     new GoogleFontsPlugin({
       path: "fonts/",
-      local: !isRelease,
+      local: false,
       fonts: [{ family: "Montserrat", variants: ["400", "700", "200"] }],
     }),
     new HtmlWebpackPlugin({
