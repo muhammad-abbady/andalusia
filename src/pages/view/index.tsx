@@ -34,7 +34,8 @@ export class ViewPageComponent extends React.Component<ViewPageComponentProps, V
     super(props);
 
     this.state = {
-      speed: 50,
+      // TODO: load from local storage
+      speed: 100,
     };
   }
 

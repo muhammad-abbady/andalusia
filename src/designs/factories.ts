@@ -3,7 +3,7 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 **********************************************************************************************/
 
 import { BaseDesign } from "./base-design";
-import { DiagonalDesign } from "./samples/diagnoal";
+import { TwentyFoldStarDesign } from "./implementations/twenty-fold-star";
 import { CancellationToken } from "./cancellation-token";
 import Two from "two.js";
 
@@ -15,33 +15,8 @@ export interface DesignFactory {
 
 export const factories: ReadonlyArray<DesignFactory> = [
   {
-    url: "/samples/diagonal",
-    title: "Diagonal Design",
-    create: (scene, speed, token) => new DiagonalDesign(scene, speed, token),
-  },
-  {
-    url: "/samples/diagonal",
-    title: "Diagonal Design",
-    create: (scene, speed, token) => new DiagonalDesign(scene, speed, token),
-  },
-  {
-    url: "/samples/diagonal",
-    title: "Diagonal Design",
-    create: (scene, speed, token) => new DiagonalDesign(scene, speed, token),
-  },
-  {
-    url: "/samples/diagonal",
-    title: "Diagonal Design",
-    create: (scene, speed, token) => new DiagonalDesign(scene, speed, token),
-  },
-  {
-    url: "/samples/diagonal",
-    title: "Diagonal Design",
-    create: (scene, speed, token) => new DiagonalDesign(scene, speed, token),
-  },
-  {
-    url: "/samples/diagonal",
-    title: "Diagonal Design",
-    create: (scene, speed, token) => new DiagonalDesign(scene, speed, token),
+    url: "/designs/twenty-fold-star",
+    title: "Twenty-fold Star",
+    create: (scene, speed, token) => new TwentyFoldStarDesign(scene, speed, token),
   },
 ];
