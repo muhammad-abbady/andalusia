@@ -4,11 +4,12 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 
 import * as React from "react";
 import { Card, CardBody, CardHeader, CardTitle } from "reactstrap";
-import { BaseDesign } from "../designs/base-design";
-import { CancellationToken } from "../designs/cancellation-token";
+import { CancellationToken, RENDER_CANCELLATION_MESSAGE } from "../designs/cancellation-token";
+import { DesignFactory } from "../designs/factories";
+import Two from "two.js";
 
 interface DesignCardProps {
-  readonly design: BaseDesign;
+  readonly factory: DesignFactory;
   readonly speed: number;
 }
 
@@ -40,7 +41,7 @@ export class DesignCardComponent extends React.Component<DesignCardProps> {
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="title-up" tag="h6">
-            {this.props.design.title}
+            {this.props.factory.title}
           </CardTitle>
         </CardHeader>
         <CardBody>
@@ -62,9 +63,33 @@ export class DesignCardComponent extends React.Component<DesignCardProps> {
     const rect = this.sceneRef.current.getBoundingClientRect();
     this.sceneRef.current.style.height = `${rect.width}px`;
 
-    // Start rendering
+    // Create scene
+    const bounds = this.sceneRef.current.getBoundingClientRect();
+    const params: Two.ConstructorParams = {
+      width: bounds.width,
+      height: bounds.height,
+      type: Two.Types.svg,
+    };
+
     this.token = new CancellationToken();
-    this.props.design.start(this.sceneRef.current, this.props.speed, this.token);
+    const scene = new Two(params).appendTo(this.sceneRef.current).bind("update", () => {
+      if (this.token) {
+        // In case it was cancelled after animation stopped
+        this.token.checkForCancellation();
+      }
+    });
+
+    // Start rendering
+    this.props.factory
+      .create(scene, this.props.speed, this.token)
+      .render()
+      .catch((error: Error) => {
+        if (error.message === RENDER_CANCELLATION_MESSAGE) {
+          scene.clear();
+        } else {
+          throw error;
+        }
+      });
   }
 
   private clearScene(): void {

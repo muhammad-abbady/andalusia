@@ -8,7 +8,7 @@ import { HomePageComponent } from "./pages/home";
 import { BrowsePageComponent } from "./pages/browse";
 import { Route, Switch, HashRouter } from "react-router-dom";
 import { ViewPageComponent } from "./pages/view";
-import { DesignsCollection } from "./designs/collection";
+import { factories } from "./designs/factories";
 
 // Import assets
 import "../assets/scss/styles.scss";
@@ -17,8 +17,8 @@ ReactDOM.render(
   <HashRouter>
     <Switch>
       <Route path="/browse/" component={BrowsePageComponent} />
-      {DesignsCollection.map((design, i) => (
-        <Route key={i} path={design.url} component={() => <ViewPageComponent design={design} />} />
+      {factories.map((factory, i) => (
+        <Route key={i} path={factory.url} component={() => <ViewPageComponent factory={factory} />} />
       ))}
       <Route component={HomePageComponent} />
     </Switch>

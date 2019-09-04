@@ -4,9 +4,9 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 
 import * as React from "react";
 import { Container, Row, Nav, NavLink, NavItem, Navbar, NavbarBrand, Collapse, Col } from "reactstrap";
-import { DesignsCollection } from "../../designs/collection";
 import { DesignCardComponent } from "../../components/design-card";
 import { Link } from "react-router-dom";
+import { factories } from "../../designs/factories";
 
 export class BrowsePageComponent extends React.Component {
   public render(): React.ReactElement {
@@ -30,10 +30,10 @@ export class BrowsePageComponent extends React.Component {
           <div className="section">
             <Container>
               <Row>
-                {DesignsCollection.map((design, i) => (
+                {factories.map((factory, i) => (
                   <Col key={i} className="pull-left" xs="12" sm="6" md="6" lg="3">
-                    <Link to={design.url}>
-                      <DesignCardComponent design={design} speed={100} />
+                    <Link to={factory.url}>
+                      <DesignCardComponent factory={factory} speed={100} />
                     </Link>
                   </Col>
                 ))}
