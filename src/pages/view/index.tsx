@@ -21,6 +21,9 @@ import { DesignCardComponent } from "../../components/design-card";
 import { AnimationSpeedPopoverComponent } from "../../components/animation-speed-popover";
 import { DesignFactory } from "../../designs/factories";
 
+const ANIMATION_SPEED_DEFAULT_VALUE = 50;
+const ANIMATION_SPEED_STORAGE_KEY = "andalusia/viewPage/animationSpeed";
+
 interface ViewPageComponentProps {
   readonly factory: DesignFactory;
 }
@@ -34,8 +37,7 @@ export class ViewPageComponent extends React.Component<ViewPageComponentProps, V
     super(props);
 
     this.state = {
-      // TODO: load from local storage
-      speed: 100,
+      speed: this.loadSpeed(),
     };
   }
 
@@ -73,11 +75,11 @@ export class ViewPageComponent extends React.Component<ViewPageComponentProps, V
                   <PopoverHeader>Animation Speed</PopoverHeader>
                   <PopoverBody>
                     <AnimationSpeedPopoverComponent
-                      value={50}
+                      value={this.state.speed}
                       min={1}
                       max={100}
                       step={1}
-                      onChange={speed => this.setState({ speed })}
+                      onChange={speed => this.saveSpeed(speed)}
                     />
                   </PopoverBody>
                 </UncontrolledPopover>
@@ -96,5 +98,20 @@ export class ViewPageComponent extends React.Component<ViewPageComponentProps, V
         </div>
       </div>
     );
+  }
+
+  private loadSpeed(): number {
+    const value = window.localStorage.getItem(ANIMATION_SPEED_STORAGE_KEY);
+    if (value) {
+      return parseInt(value);
+    }
+
+    this.saveSpeed(ANIMATION_SPEED_DEFAULT_VALUE);
+    return ANIMATION_SPEED_DEFAULT_VALUE;
+  }
+
+  private saveSpeed(value: number): void {
+    window.localStorage.setItem(ANIMATION_SPEED_STORAGE_KEY, value.toString());
+    this.setState({ speed: value });
   }
 }
