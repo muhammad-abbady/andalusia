@@ -6,6 +6,7 @@ import { BaseDesign } from "./base-design";
 import { TwentyFoldStarDesign } from "./implementations/twenty-fold-star";
 import { CancellationToken } from "./cancellation-token";
 import Two from "two.js";
+import { TwelveFoldStarDesign } from "./implementations/twelve-fold-star";
 
 export interface DesignFactory {
   readonly url: string;
@@ -14,6 +15,11 @@ export interface DesignFactory {
 }
 
 export const factories: ReadonlyArray<DesignFactory> = [
+  {
+    url: "/designs/twelve-fold-star",
+    title: "Twelve-fold Star",
+    create: (scene, speed, token, drawPencil) => new TwelveFoldStarDesign(scene, speed, token, drawPencil),
+  },
   {
     url: "/designs/twenty-fold-star",
     title: "Twenty-fold Star",

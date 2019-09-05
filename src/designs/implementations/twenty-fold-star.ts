@@ -8,6 +8,7 @@ import { CancellationToken } from "../cancellation-token";
 import { pencilBrush, highlightCircleBrush, mainBorderBrush } from "../brushes";
 import { rotatePoint, intersectionBetweenLines, intersectionWithCircle, distanceBetweenTwoPoints } from "../utils";
 
+// Source: https://www.youtube.com/watch?v=Pl07JqrTL-c
 export class TwentyFoldStarDesign extends BaseDesign {
   public constructor(scene: Two, speed: number, token: CancellationToken, drawPencil: boolean) {
     super(scene, speed, token, drawPencil);
