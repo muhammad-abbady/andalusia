@@ -14,6 +14,7 @@ export abstract class BaseDesign {
     protected readonly scene: Two,
     protected readonly speed: number,
     protected readonly token: CancellationToken,
+    protected readonly drawPencil: boolean,
   ) {}
 
   protected calculateCenterPoint(): Two.Vector {
@@ -21,6 +22,10 @@ export abstract class BaseDesign {
   }
 
   protected async drawCircle(center: Two.Vector, radius: number, brush: Brush): Promise<Two.Circle> {
+    if (!this.drawPencil && brush.isPencil) {
+      return this.scene.makeCircle(center.x, center.y, radius);
+    }
+
     const centerHighlight = this.scene.makeCircle(center.x, center.y, 3);
     highlightCircleBrush.applyTo(centerHighlight);
     this.scene.update();
@@ -46,6 +51,10 @@ export abstract class BaseDesign {
   }
 
   protected async drawLine(from: Two.Vector, to: Two.Vector, brush: Brush): Promise<Two.Line> {
+    if (!this.drawPencil && brush.isPencil) {
+      return this.scene.makeLine(from.x, from.y, to.x, to.y);
+    }
+
     const fromHighlight = this.scene.makeCircle(from.x, from.y, 3);
     highlightCircleBrush.applyTo(fromHighlight);
 

@@ -10,13 +10,13 @@ import Two from "two.js";
 export interface DesignFactory {
   readonly url: string;
   readonly title: string;
-  readonly create: (scene: Two, speed: number, token: CancellationToken) => BaseDesign;
+  readonly create: (scene: Two, speed: number, token: CancellationToken, drawPencil: boolean) => BaseDesign;
 }
 
 export const factories: ReadonlyArray<DesignFactory> = [
   {
     url: "/designs/twenty-fold-star",
     title: "Twenty-fold Star",
-    create: (scene, speed, token) => new TwentyFoldStarDesign(scene, speed, token),
+    create: (scene, speed, token, drawPencil) => new TwentyFoldStarDesign(scene, speed, token, drawPencil),
   },
 ];

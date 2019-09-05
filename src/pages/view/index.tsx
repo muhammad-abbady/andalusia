@@ -90,7 +90,7 @@ export class ViewPageComponent extends React.Component<ViewPageComponentProps, V
             <Container className="view-page-container">
               <Row>
                 <Col className="ml-auto mr-auto" xs="12" sm="12" md="12" lg="12">
-                  <DesignCardComponent factory={this.props.factory} speed={this.state.speed} />
+                  <DesignCardComponent factory={this.props.factory} speed={this.state.speed} drawPencil={true} />
                 </Col>
               </Row>
             </Container>

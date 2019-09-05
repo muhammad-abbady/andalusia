@@ -9,8 +9,8 @@ import { pencilBrush, highlightCircleBrush, mainBorderBrush } from "../brushes";
 import { rotatePoint, intersectionBetweenLines, intersectionWithCircle, distanceBetweenTwoPoints } from "../utils";
 
 export class TwentyFoldStarDesign extends BaseDesign {
-  public constructor(scene: Two, speed: number, token: CancellationToken) {
-    super(scene, speed, token);
+  public constructor(scene: Two, speed: number, token: CancellationToken, drawPencil: boolean) {
+    super(scene, speed, token, drawPencil);
   }
 
   public async render(): Promise<void> {
