@@ -8,6 +8,7 @@ import { CancellationToken } from "./cancellation-token";
 import Two from "two.js";
 import { TwelveFoldStarDesign } from "./implementations/twelve-fold-star";
 import { TwelveFoldFlowerDesign } from "./implementations/twelve-fold-flower";
+import { ThirtyTwoFoldFlowerDesign } from "./implementations/thirty-two-fold-flower";
 
 export interface DesignFactory {
   readonly url: string;
@@ -30,5 +31,10 @@ export const factories: ReadonlyArray<DesignFactory> = [
     url: "/designs/twelve-fold-flower",
     title: "Twelve-fold Flower",
     create: (scene, speed, token, shouldAnimate) => new TwelveFoldFlowerDesign(scene, speed, token, shouldAnimate),
+  },
+  {
+    url: "/designs/thirty-two-fold-flower",
+    title: "Thirty-two-fold Flower",
+    create: (scene, speed, token, shouldAnimate) => new ThirtyTwoFoldFlowerDesign(scene, speed, token, shouldAnimate),
   },
 ];
