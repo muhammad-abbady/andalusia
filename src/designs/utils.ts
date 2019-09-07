@@ -8,6 +8,14 @@ export function angleToRadians(angle: number): number {
   return (angle * Math.PI) / 180;
 }
 
+export function radiansToAngle(radians: number): number {
+  return (radians * 180) / Math.PI;
+}
+
+export function areFloatsClose(a: number, b: number): boolean {
+  return a.toFixed(5) === b.toFixed(5);
+}
+
 export function sleep(duration: number): Promise<void> {
   return new Promise(resolve => {
     setTimeout(resolve, 1000 / duration);
@@ -90,4 +98,53 @@ export function intersectionWithCircle(
     // line doesn't touch circle
     return [];
   }
+}
+
+export function intersectionBetweenCircles(
+  center1: Two.Vector,
+  radius1: number,
+  center2: Two.Vector,
+  radius2: number,
+): Two.Vector[] {
+  // dx and dy are the vertical and horizontal distances between the circle centers.
+  const dx = center2.x - center1.x;
+  const dy = center2.y - center1.y;
+
+  // Determine the straight-line distance between the centers.
+  const d = Math.sqrt(dy * dy + dx * dx);
+
+  // Check for solvability.
+  if (d > radius1 + radius2) {
+    // no solution. circles do not intersect.
+    return [];
+  }
+  if (d < Math.abs(radius1 - radius2)) {
+    // no solution. one circle is contained in the other.
+    return [];
+  }
+
+  // point2 is the point where the line through the circle intersection
+  // points crosses the line between the circle centers.
+
+  // Determine the distance from point 0 to point 2.
+  const a = (radius1 * radius1 - radius2 * radius2 + d * d) / (2.0 * d);
+
+  // Determine the coordinates of point2.
+  const x2 = center1.x + (dx * a) / d;
+  const y2 = center1.y + (dy * a) / d;
+
+  // Determine the distance from point 2 to either of the intersection points.
+  const h = Math.sqrt(radius1 * radius1 - a * a);
+
+  // Now determine the offsets of the intersection points from point 2.
+  const rx = -dy * (h / d);
+  const ry = dx * (h / d);
+
+  // Determine the absolute intersection points.
+  const xi = x2 + rx;
+  const xiPrime = x2 - rx;
+  const yi = y2 + ry;
+  const yiPrime = y2 - ry;
+
+  return [new Two.Vector(xi, yi), new Two.Vector(xiPrime, yiPrime)];
 }
