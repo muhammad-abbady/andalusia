@@ -7,6 +7,8 @@ import { CancellationToken } from "./cancellation-token";
 import { Brush, highlightCircleBrush } from "./brushes";
 import { rotatePoint, distanceBetweenTwoPoints, radiansToAngle, areFloatsClose } from "./utils";
 
+const ANIMATION_SLEEP = 20;
+
 export abstract class BaseDesign {
   public abstract render(): Promise<void>;
 
@@ -22,10 +24,8 @@ export abstract class BaseDesign {
   }
 
   protected async drawCircle(center: Two.Vector, radius: number, brush: Brush): Promise<Two.Circle> {
-    if (!this.shouldAnimate) {
-      const circle = this.scene.makeCircle(center.x, center.y, radius);
-      brush.applyTo(circle);
-      return circle;
+    if (this.shouldFakeShape(brush)) {
+      return new Two.Circle(center.x, center.y, radius);
     }
 
     const centerHighlight = this.scene.makeCircle(center.x, center.y, 3);
@@ -74,10 +74,12 @@ export abstract class BaseDesign {
       throw new Error("Curve calculation should have ended at to point.");
     }
 
-    if (!this.shouldAnimate) {
-      const curve = this.scene.makeCurve(...points, true);
-      brush.applyTo(curve);
-      return curve;
+    if (this.shouldFakeShape(brush)) {
+      const vectors = Array<Two.Vector>();
+      for (let i = 0; i < points.length; i += 2) {
+        vectors.push(new Two.Vector(points[i], points[i + 1]));
+      }
+      return new Two.Path(vectors, false, true);
     }
 
     const centerHighlight = this.scene.makeCircle(center.x, center.y, 3);
@@ -104,10 +106,8 @@ export abstract class BaseDesign {
   }
 
   protected async drawLine(from: Two.Vector, to: Two.Vector, brush: Brush): Promise<Two.Line> {
-    if (!this.shouldAnimate) {
-      const line = this.scene.makeLine(from.x, from.y, to.x, to.y);
-      brush.applyTo(line);
-      return line;
+    if (this.shouldFakeShape(brush)) {
+      return new Two.Line(from.x, from.y, to.x, to.y);
     }
 
     const fromHighlight = this.scene.makeCircle(from.x, from.y, 3);
@@ -161,13 +161,17 @@ export abstract class BaseDesign {
     this.scene.update();
   }
 
-  private sleep(): Promise<void> {
+  protected sleep(multipiler = 1): Promise<void> {
     if (this.shouldAnimate) {
       return new Promise(resolve => {
-        setTimeout(resolve, 20);
+        setTimeout(resolve, ANIMATION_SLEEP * multipiler);
       });
     }
 
     return Promise.resolve();
+  }
+
+  private shouldFakeShape(brush: Brush): boolean {
+    return !this.shouldAnimate && brush.isPencil;
   }
 }

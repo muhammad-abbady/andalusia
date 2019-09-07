@@ -13,7 +13,7 @@ export class Brush {
     public readonly isPencil: boolean,
   ) {}
 
-  public applyTo(shape: Two.Path): void {
+  public applyTo(shape: Two.Object): void {
     shape.opacity = this.opacity;
     shape.stroke = this.foreground;
     shape.linewidth = this.lineWidth;
@@ -23,4 +23,6 @@ export class Brush {
 
 export const highlightCircleBrush = new Brush(0.8, "red", 3, "pink", true);
 export const pencilBrush = new Brush(0.3, "black", 1, "transparent", true);
+
 export const mainBorderBrush = new Brush(1, "#2ca8ff", 2, "transparent", false);
+export const blankBrush = new Brush(1, "white", 0, "white", false);

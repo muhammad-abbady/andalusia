@@ -9,6 +9,8 @@ import Two from "two.js";
 import { TwelveFoldStarDesign } from "./implementations/twelve-fold-star";
 import { TwelveFoldFlowerDesign } from "./implementations/twelve-fold-flower";
 import { ThirtyTwoFoldFlowerDesign } from "./implementations/thirty-two-fold-flower";
+import { EightFoldStarTessellationDesign } from "./implementations/eight-fold-star-tessellation";
+import { EightFoldStarDesign } from "./implementations/eight-fold-star";
 
 export interface DesignFactory {
   readonly url: string;
@@ -17,6 +19,17 @@ export interface DesignFactory {
 }
 
 export const factories: ReadonlyArray<DesignFactory> = [
+  {
+    url: "/designs/eight-fold-star",
+    title: "Eight-fold Star",
+    create: (scene, speed, token, shouldAnimate) => new EightFoldStarDesign(scene, speed, token, shouldAnimate),
+  },
+  {
+    url: "/designs/eight-fold-star-tessellation",
+    title: "Eight-fold Star Tessellation",
+    create: (scene, speed, token, shouldAnimate) =>
+      new EightFoldStarTessellationDesign(scene, speed, token, shouldAnimate),
+  },
   {
     url: "/designs/twelve-fold-star",
     title: "Twelve-fold Star",
