@@ -6,54 +6,56 @@ import { BaseDesign } from "../base-design";
 import Two from "two.js";
 import { CancellationToken } from "../cancellation-token";
 import { pencilBrush, highlightCircleBrush, mainBorderBrush } from "../brushes";
-import { rotatePoint, intersectionBetweenLines, intersectionWithCircle, distanceBetweenTwoPoints } from "../utils";
+import {
+  rotatePoint,
+  intersectionBetweenTwoLines,
+  intersectionBetweenLineAndCircle,
+  distanceBetweenTwoPoints,
+} from "../utils";
 
 // Source: https://www.youtube.com/watch?v=Pl07JqrTL-c
 export class TwentyFoldStarDesign extends BaseDesign {
-  public constructor(scene: Two, speed: number, token: CancellationToken, drawPencil: boolean) {
-    super(scene, speed, token, drawPencil);
+  public constructor(scene: Two, speed: number, token: CancellationToken, shouldAnimate: boolean) {
+    super(scene, speed, token, shouldAnimate);
   }
 
   public async render(): Promise<void> {
-    const margin = 10;
     const center = this.calculateCenterPoint();
 
-    const radius = Math.min(center.x, center.y) - margin;
+    const radius = Math.min(center.x, center.y);
     const outerCircle = await this.drawCircle(center, radius, pencilBrush);
 
-    const diagonals = await this.drawLinesAround(
+    const topCenterPoint = new Two.Vector(center.x, 0);
+    const diagonals = await this.drawWithRotatingPoint(
       center,
       10,
       90 / 5,
-      pencilBrush,
-      new Two.Vector(center.x, margin),
-      new Two.Vector(center.x, this.scene.height - margin),
+      [topCenterPoint, new Two.Vector(center.x, this.scene.height)],
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, pencilBrush),
     );
 
-    const outerPentagonEdges = await this.drawLinesAround(
+    const outerPentagonEdges = await this.drawWithRotatingPoint(
       center,
       20,
       90 / 5,
-      pencilBrush,
-      new Two.Vector(center.x, margin),
-      rotatePoint(new Two.Vector(center.x, margin), center, 4 * (90 / 5)),
+      [topCenterPoint, rotatePoint(topCenterPoint, center, 4 * (90 / 5))],
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, pencilBrush),
     );
 
-    const pentagonIntersection = intersectionBetweenLines(outerPentagonEdges[0], outerPentagonEdges[17]);
-    const pentagonIntersectionWithCircle = intersectionWithCircle(
+    const pentagonIntersection = intersectionBetweenTwoLines(outerPentagonEdges[0], outerPentagonEdges[17]);
+    const pentagonIntersectionWithCircle = intersectionBetweenLineAndCircle(
       pentagonIntersection,
       rotatePoint(pentagonIntersection, center, 180),
       center,
       radius,
     );
 
-    const midDiagonals = await this.drawLinesAround(
+    const midDiagonals = await this.drawWithRotatingPoint(
       center,
       10,
       90 / 5,
-      pencilBrush,
-      pentagonIntersectionWithCircle[0],
-      pentagonIntersectionWithCircle[1],
+      [pentagonIntersectionWithCircle[0], pentagonIntersectionWithCircle[1]],
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, pencilBrush),
     );
 
     const markerLine = await this.drawLine(
@@ -62,72 +64,69 @@ export class TwentyFoldStarDesign extends BaseDesign {
       pencilBrush,
     );
 
-    const markerPosition = intersectionBetweenLines(markerLine, midDiagonals[9]);
+    const markerPosition = intersectionBetweenTwoLines(markerLine, midDiagonals[9]);
     const marker = await this.drawCircle(markerPosition, 5, highlightCircleBrush);
 
-    this.scene.remove(markerLine);
-    this.scene.update();
+    this.removeAndUpdate(markerLine);
 
     const innerCircle = await this.drawCircle(center, distanceBetweenTwoPoints(center, markerPosition), pencilBrush);
 
-    this.scene.remove(marker);
-    this.scene.update();
+    this.removeAndUpdate(marker);
 
-    const firstTranslatedLine = intersectionWithCircle(
+    const firstTranslatedLine = intersectionBetweenLineAndCircle(
       rotatePoint(markerPosition, center, -(90 / 10)),
       rotatePoint(markerPosition, center, 180 + 90 / 10),
       center,
       radius,
     );
 
-    const allTranslatedLines = await this.drawLinesAround(
+    const allTranslatedLines = await this.drawWithRotatingPoint(
       center,
       20,
       90 / 5,
-      pencilBrush,
-      firstTranslatedLine[0],
-      firstTranslatedLine[1],
+      [firstTranslatedLine[0], firstTranslatedLine[1]],
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, pencilBrush),
     );
 
-    // Outer blue edges
-    await this.drawLinesAround(
+    await this.drawWithRotatingPoint(
       center,
       20,
       90 / 5,
-      mainBorderBrush,
-      diagonals[0].vertices[0],
-      intersectionBetweenLines(allTranslatedLines[12], outerPentagonEdges[0]),
+      [diagonals[0].vertices[0], intersectionBetweenTwoLines(allTranslatedLines[12], outerPentagonEdges[0])],
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
     );
 
-    await this.drawLinesAround(
+    await this.drawWithRotatingPoint(
       center,
       20,
       90 / 5,
-      mainBorderBrush,
-      intersectionBetweenLines(allTranslatedLines[3], outerPentagonEdges[0]),
-      outerPentagonEdges[0].vertices[1],
+      [intersectionBetweenTwoLines(allTranslatedLines[3], outerPentagonEdges[0]), outerPentagonEdges[0].vertices[1]],
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
     );
 
-    // Inner blue edges
-    await this.drawLinesAround(
+    await this.drawWithRotatingPoint(
       center,
       20,
       90 / 5,
-      mainBorderBrush,
-      intersectionBetweenLines(allTranslatedLines[6], allTranslatedLines[12]),
-      intersectionBetweenLines(allTranslatedLines[12], outerPentagonEdges[0]),
+      [
+        intersectionBetweenTwoLines(allTranslatedLines[6], allTranslatedLines[12]),
+        intersectionBetweenTwoLines(allTranslatedLines[12], outerPentagonEdges[0]),
+      ],
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
     );
 
-    await this.drawLinesAround(
+    await this.drawWithRotatingPoint(
       center,
       20,
       90 / 5,
-      mainBorderBrush,
-      rotatePoint(intersectionBetweenLines(allTranslatedLines[6], allTranslatedLines[12]), center, 17 * (90 / 5)),
-      intersectionBetweenLines(allTranslatedLines[3], outerPentagonEdges[0]),
+      [
+        rotatePoint(intersectionBetweenTwoLines(allTranslatedLines[6], allTranslatedLines[12]), center, 17 * (90 / 5)),
+        intersectionBetweenTwoLines(allTranslatedLines[3], outerPentagonEdges[0]),
+      ],
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
     );
 
-    this.scene.remove(
+    this.removeAndUpdate(
       outerCircle,
       ...diagonals,
       ...outerPentagonEdges,
@@ -135,6 +134,5 @@ export class TwentyFoldStarDesign extends BaseDesign {
       innerCircle,
       ...allTranslatedLines,
     );
-    this.scene.update();
   }
 }

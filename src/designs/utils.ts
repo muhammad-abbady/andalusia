@@ -13,13 +13,7 @@ export function radiansToAngle(radians: number): number {
 }
 
 export function areFloatsClose(a: number, b: number): boolean {
-  return a.toFixed(5) === b.toFixed(5);
-}
-
-export function sleep(duration: number): Promise<void> {
-  return new Promise(resolve => {
-    setTimeout(resolve, 1000 / duration);
-  });
+  return Math.abs(a - b).toFixed(5) === "0.00000";
 }
 
 export function distanceBetweenTwoPoints(p1: Two.Vector, p2: Two.Vector): number {
@@ -36,7 +30,7 @@ export function rotatePoint(point: Two.Vector, origin: Two.Vector, angle: number
   );
 }
 
-export function intersectionBetweenLines(line1: Two.Line, line2: Two.Line): Two.Vector {
+export function intersectionBetweenTwoLines(line1: Two.Line, line2: Two.Line): Two.Vector {
   const p1 = line1.vertices[0];
   const p2 = line1.vertices[1];
   const p3 = line2.vertices[0];
@@ -51,7 +45,7 @@ export function intersectionBetweenLines(line1: Two.Line, line2: Two.Line): Two.
   return new Two.Vector(p1.x + ua * (p2.x - p1.x), p1.y + ua * (p2.y - p1.y));
 }
 
-export function intersectionWithCircle(
+export function intersectionBetweenLineAndCircle(
   p1: Two.Vector,
   p2: Two.Vector,
   center: Two.Vector,
@@ -100,7 +94,7 @@ export function intersectionWithCircle(
   }
 }
 
-export function intersectionBetweenCircles(
+export function intersectionBetweenTwoCircles(
   center1: Two.Vector,
   radius1: number,
   center2: Two.Vector,
@@ -140,11 +134,5 @@ export function intersectionBetweenCircles(
   const rx = -dy * (h / d);
   const ry = dx * (h / d);
 
-  // Determine the absolute intersection points.
-  const xi = x2 + rx;
-  const xiPrime = x2 - rx;
-  const yi = y2 + ry;
-  const yiPrime = y2 - ry;
-
-  return [new Two.Vector(xi, yi), new Two.Vector(xiPrime, yiPrime)];
+  return [new Two.Vector(x2 + rx, y2 + ry), new Two.Vector(x2 - rx, y2 - ry)];
 }

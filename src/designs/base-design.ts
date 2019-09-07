@@ -5,7 +5,7 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 import Two from "two.js";
 import { CancellationToken } from "./cancellation-token";
 import { Brush, highlightCircleBrush } from "./brushes";
-import { sleep, rotatePoint, distanceBetweenTwoPoints, radiansToAngle, areFloatsClose } from "./utils";
+import { rotatePoint, distanceBetweenTwoPoints, radiansToAngle, areFloatsClose } from "./utils";
 
 export abstract class BaseDesign {
   public abstract render(): Promise<void>;
@@ -14,7 +14,7 @@ export abstract class BaseDesign {
     protected readonly scene: Two,
     protected readonly speed: number,
     protected readonly token: CancellationToken,
-    protected readonly drawPencil: boolean,
+    protected readonly shouldAnimate: boolean,
   ) {}
 
   protected calculateCenterPoint(): Two.Vector {
@@ -22,8 +22,10 @@ export abstract class BaseDesign {
   }
 
   protected async drawCircle(center: Two.Vector, radius: number, brush: Brush): Promise<Two.Circle> {
-    if (!this.drawPencil && brush.isPencil) {
-      return this.scene.makeCircle(center.x, center.y, radius);
+    if (!this.shouldAnimate) {
+      const circle = this.scene.makeCircle(center.x, center.y, radius);
+      brush.applyTo(circle);
+      return circle;
     }
 
     const centerHighlight = this.scene.makeCircle(center.x, center.y, 3);
@@ -40,12 +42,11 @@ export abstract class BaseDesign {
     for (let scale = 0; scale < 1; scale += increment) {
       circle.scale = scale;
       this.scene.update();
-      await sleep(50);
+      await this.sleep();
     }
 
     circle.scale = 1;
-    this.scene.remove(centerHighlight);
-    this.scene.update();
+    this.removeAndUpdate(centerHighlight);
 
     return circle;
   }
@@ -73,8 +74,10 @@ export abstract class BaseDesign {
       throw new Error("Curve calculation should have ended at to point.");
     }
 
-    if (!this.drawPencil && brush.isPencil) {
-      return this.scene.makeCurve(...points, true);
+    if (!this.shouldAnimate) {
+      const curve = this.scene.makeCurve(...points, true);
+      brush.applyTo(curve);
+      return curve;
     }
 
     const centerHighlight = this.scene.makeCircle(center.x, center.y, 3);
@@ -91,19 +94,20 @@ export abstract class BaseDesign {
     for (let scale = 0; scale < 1; scale += increment) {
       curve.scale = scale;
       this.scene.update();
-      await sleep(50);
+      await this.sleep();
     }
 
     curve.scale = 1;
-    this.scene.remove(centerHighlight);
-    this.scene.update();
+    this.removeAndUpdate(centerHighlight);
 
     return curve;
   }
 
   protected async drawLine(from: Two.Vector, to: Two.Vector, brush: Brush): Promise<Two.Line> {
-    if (!this.drawPencil && brush.isPencil) {
-      return this.scene.makeLine(from.x, from.y, to.x, to.y);
+    if (!this.shouldAnimate) {
+      const line = this.scene.makeLine(from.x, from.y, to.x, to.y);
+      brush.applyTo(line);
+      return line;
     }
 
     const fromHighlight = this.scene.makeCircle(from.x, from.y, 3);
@@ -121,55 +125,49 @@ export abstract class BaseDesign {
     for (let i = 0; i < steps; i++) {
       line.vertices[1].addSelf(change);
       this.scene.update();
-      await sleep(50);
+      await this.sleep();
     }
 
     line.vertices[1].set(to.x, to.y);
-    this.scene.remove(fromHighlight, toHighlight);
-    this.scene.update();
+    this.removeAndUpdate(fromHighlight, toHighlight);
 
     return line;
   }
 
-  protected async drawLinesAround(
-    rotateAround: Two.Vector,
+  protected async drawWithRotatingPoint<T>(
+    center: Two.Vector,
     repetition: number,
     angleDelta: number,
-    brush: Brush,
-    from: Two.Vector,
-    to: Two.Vector,
-  ): Promise<Two.Line[]> {
-    const lines = Array<Two.Line>();
+    points: Two.Vector[],
+    apply: (points: Two.Vector[]) => Promise<T>,
+  ): Promise<T[]> {
+    const shapes = Array<T>();
 
     for (let i = 0; i < repetition; i++) {
-      lines.push(await this.drawLine(from, to, brush));
+      shapes.push(await apply(points));
 
-      from = rotatePoint(from, rotateAround, angleDelta);
-      to = rotatePoint(to, rotateAround, angleDelta);
+      if (i + 1 < repetition) {
+        for (let j = 0; j < points.length; j++) {
+          points[j] = rotatePoint(points[j], center, angleDelta);
+        }
+      }
     }
 
-    return lines;
+    return shapes;
   }
 
-  protected async drawCurvesAround(
-    rotateAround: Two.Vector,
-    repetition: number,
-    angleDelta: number,
-    brush: Brush,
-    center: Two.Vector,
-    from: Two.Vector,
-    to: Two.Vector,
-  ): Promise<Two.Path[]> {
-    const curves = Array<Two.Line>();
+  protected removeAndUpdate(...shapes: Two.Object[]): void {
+    this.scene.remove(...shapes);
+    this.scene.update();
+  }
 
-    for (let i = 0; i < repetition; i++) {
-      curves.push(await this.drawCurve(center, from, to, brush));
-
-      center = rotatePoint(center, rotateAround, angleDelta);
-      from = rotatePoint(from, rotateAround, angleDelta);
-      to = rotatePoint(to, rotateAround, angleDelta);
+  private sleep(): Promise<void> {
+    if (this.shouldAnimate) {
+      return new Promise(resolve => {
+        setTimeout(resolve, 20);
+      });
     }
 
-    return curves;
+    return Promise.resolve();
   }
 }

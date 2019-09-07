@@ -11,7 +11,7 @@ import Two from "two.js";
 interface DesignCardProps {
   readonly factory: DesignFactory;
   readonly speed: number;
-  readonly drawPencil: boolean;
+  readonly shouldAnimate: boolean;
 }
 
 export class DesignCardComponent extends React.Component<DesignCardProps> {
@@ -82,7 +82,7 @@ export class DesignCardComponent extends React.Component<DesignCardProps> {
 
     // Start rendering
     this.props.factory
-      .create(scene, this.props.speed, this.token, this.props.drawPencil)
+      .create(scene, this.props.speed, this.token, this.props.shouldAnimate)
       .render()
       .catch((error: Error) => {
         if (error.message === RENDER_CANCELLATION_MESSAGE) {

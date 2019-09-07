@@ -6,103 +6,99 @@ import { BaseDesign } from "../base-design";
 import Two from "two.js";
 import { CancellationToken } from "../cancellation-token";
 import { pencilBrush, mainBorderBrush } from "../brushes";
-import { intersectionBetweenLines, intersectionWithCircle } from "../utils";
+import { intersectionBetweenTwoLines, intersectionBetweenLineAndCircle } from "../utils";
 
 // Source: https://www.youtube.com/watch?v=dXiYP-Ps8CQ
 export class TwelveFoldStarDesign extends BaseDesign {
-  public constructor(scene: Two, speed: number, token: CancellationToken, drawPencil: boolean) {
-    super(scene, speed, token, drawPencil);
+  public constructor(scene: Two, speed: number, token: CancellationToken, shouldAnimate: boolean) {
+    super(scene, speed, token, shouldAnimate);
   }
 
   public async render(): Promise<void> {
-    const margin = 10;
     const center = this.calculateCenterPoint();
 
-    const radius = Math.min(center.x, center.y) - margin;
+    const radius = Math.min(center.x, center.y);
     const outerCircle = await this.drawCircle(center, radius, pencilBrush);
 
-    const diagonals = await this.drawLinesAround(
+    const diagonals = await this.drawWithRotatingPoint(
       center,
       6,
       90 / 3,
-      pencilBrush,
-      new Two.Vector(center.x, margin),
-      new Two.Vector(center.x, this.scene.height - margin),
+      [new Two.Vector(center.x, 0), new Two.Vector(center.x, this.scene.height)],
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, pencilBrush),
     );
 
-    const squares = await this.drawLinesAround(
+    const squares = await this.drawWithRotatingPoint(
       center,
       12,
       90 / 3,
-      pencilBrush,
-      diagonals[0].vertices[0],
-      diagonals[3].vertices[0],
+      [diagonals[0].vertices[0], diagonals[3].vertices[0]],
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, pencilBrush),
     );
 
-    const hexagons = await this.drawLinesAround(
+    const hexagons = await this.drawWithRotatingPoint(
       center,
       12,
       90 / 3,
-      pencilBrush,
-      diagonals[0].vertices[0],
-      diagonals[2].vertices[0],
+      [diagonals[0].vertices[0], diagonals[2].vertices[0]],
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, pencilBrush),
     );
 
-    const translatedLineP1 = intersectionBetweenLines(squares[0], squares[10]);
-    const translatedLineP2 = intersectionBetweenLines(squares[3], squares[5]);
-    const translatedLineIntersectionWithCircle = intersectionWithCircle(
+    const translatedLineP1 = intersectionBetweenTwoLines(squares[0], squares[10]);
+    const translatedLineP2 = intersectionBetweenTwoLines(squares[3], squares[5]);
+    const translatedLineIntersectionWithCircle = intersectionBetweenLineAndCircle(
       translatedLineP1,
       translatedLineP2,
       center,
       radius,
     );
 
-    const translatedLines = await this.drawLinesAround(
+    const translatedLines = await this.drawWithRotatingPoint(
       center,
       12,
       90 / 3,
-      pencilBrush,
-      translatedLineIntersectionWithCircle[0],
-      translatedLineIntersectionWithCircle[1],
+      [translatedLineIntersectionWithCircle[0], translatedLineIntersectionWithCircle[1]],
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, pencilBrush),
     );
 
-    await this.drawLinesAround(
+    await this.drawWithRotatingPoint(
       center,
       12,
       90 / 3,
-      mainBorderBrush,
-      diagonals[0].vertices[0],
-      intersectionBetweenLines(translatedLines[0], hexagons[0]),
+      [diagonals[0].vertices[0], intersectionBetweenTwoLines(translatedLines[0], hexagons[0])],
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
     );
 
-    await this.drawLinesAround(
+    await this.drawWithRotatingPoint(
       center,
       12,
       90 / 3,
-      mainBorderBrush,
-      diagonals[0].vertices[0],
-      intersectionBetweenLines(translatedLines[6], hexagons[10]),
+      [diagonals[0].vertices[0], intersectionBetweenTwoLines(translatedLines[6], hexagons[10])],
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
     );
 
-    await this.drawLinesAround(
+    await this.drawWithRotatingPoint(
       center,
       12,
       90 / 3,
-      mainBorderBrush,
-      intersectionBetweenLines(translatedLines[0], hexagons[0]),
-      intersectionBetweenLines(translatedLines[0], translatedLines[10]),
+      [
+        intersectionBetweenTwoLines(translatedLines[0], hexagons[0]),
+        intersectionBetweenTwoLines(translatedLines[0], translatedLines[10]),
+      ],
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
     );
 
-    await this.drawLinesAround(
+    await this.drawWithRotatingPoint(
       center,
       12,
       90 / 3,
-      mainBorderBrush,
-      intersectionBetweenLines(translatedLines[6], hexagons[10]),
-      intersectionBetweenLines(diagonals[4], translatedLines[6]),
+      [
+        intersectionBetweenTwoLines(translatedLines[6], hexagons[10]),
+        intersectionBetweenTwoLines(diagonals[4], translatedLines[6]),
+      ],
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
     );
 
-    this.scene.remove(outerCircle, ...diagonals, ...squares, ...hexagons, ...translatedLines);
-    this.scene.update();
+    this.removeAndUpdate(outerCircle, ...diagonals, ...squares, ...hexagons, ...translatedLines);
   }
 }

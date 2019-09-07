@@ -7,96 +7,81 @@ import Two from "two.js";
 import { CancellationToken } from "../cancellation-token";
 import { pencilBrush, mainBorderBrush, highlightCircleBrush } from "../brushes";
 import {
-  intersectionBetweenLines,
-  intersectionWithCircle,
+  intersectionBetweenTwoLines,
+  intersectionBetweenLineAndCircle,
   distanceBetweenTwoPoints,
-  intersectionBetweenCircles,
+  intersectionBetweenTwoCircles,
   rotatePoint,
 } from "../utils";
 
 // Source: https://www.youtube.com/watch?v=mCCWntbIHf0
-// TODO: remove margin
-// TODO: refactor utils and base class
-// TODO: checking pencil should be moved to a util, and sleeping should be 0 when in outer page
-// TODO: maybe animate circles and curves on path instead with scale
-// TODO: maybe instead of removing shapes at the end, base design can remove them automatically based on a tag?
 export class TwelveFoldFlowerDesign extends BaseDesign {
-  public constructor(scene: Two, speed: number, token: CancellationToken, drawPencil: boolean) {
-    super(scene, speed, token, drawPencil);
+  public constructor(scene: Two, speed: number, token: CancellationToken, shouldAnimate: boolean) {
+    super(scene, speed, token, shouldAnimate);
   }
 
   public async render(): Promise<void> {
-    const margin = 10;
     const center = this.calculateCenterPoint();
 
-    const radius = Math.min(center.x, center.y) - margin;
+    const radius = Math.min(center.x, center.y);
     const outerCircle = await this.drawCircle(center, radius, pencilBrush);
 
-    const diagonals = await this.drawLinesAround(
+    const diagonals = await this.drawWithRotatingPoint(
       center,
       6,
       90 / 3,
-      pencilBrush,
-      new Two.Vector(center.x, margin),
-      new Two.Vector(center.x, this.scene.height - margin),
+      [new Two.Vector(center.x, 0), new Two.Vector(center.x, this.scene.height)],
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, pencilBrush),
     );
 
     const innerCircleDiagonal = await this.drawLine(diagonals[0].vertices[0], diagonals[3].vertices[0], pencilBrush);
-    const innerCircleMarkerPosition = intersectionBetweenLines(diagonals[1], innerCircleDiagonal);
+    const innerCircleMarkerPosition = intersectionBetweenTwoLines(diagonals[1], innerCircleDiagonal);
     const innerCircleMarker = await this.drawCircle(innerCircleMarkerPosition, 5, highlightCircleBrush);
     const innerCircleRadius = distanceBetweenTwoPoints(center, innerCircleMarkerPosition);
     const innerCircle = await this.drawCircle(center, innerCircleRadius, pencilBrush);
 
-    this.scene.remove(innerCircleDiagonal, innerCircleMarker);
-    this.scene.update();
+    this.removeAndUpdate(innerCircleDiagonal, innerCircleMarker);
 
-    const intersectionWithInnerCircle = intersectionWithCircle(
+    const intersectionWithInnerCircle = intersectionBetweenLineAndCircle(
       diagonals[3].vertices[0],
       diagonals[3].vertices[1],
       center,
       innerCircleRadius,
     )[0];
 
-    const innerCurves = await this.drawCurvesAround(
+    const innerCurves = await this.drawWithRotatingPoint(
       center,
       12,
       90 / 3,
-      pencilBrush,
-      intersectionWithInnerCircle,
-      diagonals[5].vertices[0],
-      diagonals[1].vertices[0],
+      [intersectionWithInnerCircle, diagonals[5].vertices[0], diagonals[1].vertices[0]],
+      ([rCenter, rFrom, rTo]) => this.drawCurve(rCenter, rFrom, rTo, pencilBrush),
     );
 
-    const blueCurve1Start = intersectionBetweenCircles(
+    const blueCurve1Start = intersectionBetweenTwoCircles(
       intersectionWithInnerCircle,
       distanceBetweenTwoPoints(intersectionWithInnerCircle, diagonals[5].vertices[0]),
       rotatePoint(intersectionWithInnerCircle, center, (4 * 90) / 3),
       distanceBetweenTwoPoints(intersectionWithInnerCircle, diagonals[5].vertices[0]),
     )[0];
 
-    await this.drawCurvesAround(
+    await this.drawWithRotatingPoint(
       center,
       12,
       90 / 3,
-      mainBorderBrush,
-      intersectionWithInnerCircle,
-      blueCurve1Start,
-      diagonals[1].vertices[0],
+      [intersectionWithInnerCircle, blueCurve1Start, diagonals[1].vertices[0]],
+      ([rCenter, rFrom, rTo]) => this.drawCurve(rCenter, rFrom, rTo, mainBorderBrush),
     );
 
-    const blueCurve2Start = new Two.Vector(blueCurve1Start.x, 2 * radius - blueCurve1Start.y + margin * 2);
+    const blueCurve2Start = new Two.Vector(blueCurve1Start.x, 2 * radius - blueCurve1Start.y);
 
-    await this.drawCurvesAround(
+    await this.drawWithRotatingPoint(
       center,
       12,
       90 / 3,
-      mainBorderBrush,
-      intersectionWithInnerCircle,
-      diagonals[5].vertices[0],
-      blueCurve2Start,
+      [intersectionWithInnerCircle, diagonals[5].vertices[0], blueCurve2Start],
+      ([rCenter, rFrom, rTo]) => this.drawCurve(rCenter, rFrom, rTo, mainBorderBrush),
     );
 
-    this.scene.remove(outerCircle, ...diagonals, innerCircle, ...innerCurves);
-    this.scene.update();
+    this.removeAndUpdate(outerCircle, ...diagonals, innerCircle, ...innerCurves);
   }
 }

@@ -33,7 +33,7 @@ export class BrowsePageComponent extends React.Component {
                 {factories.map((factory, i) => (
                   <Col key={i} className="pull-left" xs="12" sm="6" md="6" lg="3">
                     <Link to={factory.url}>
-                      <DesignCardComponent factory={factory} speed={100} drawPencil={false} />
+                      <DesignCardComponent factory={factory} speed={100} shouldAnimate={false} />
                     </Link>
                   </Col>
                 ))}
