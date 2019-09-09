@@ -30,5 +30,10 @@ gulp.task("lint", gulp.parallel("eslint", "prettier"));
 
 gulp.task(
   "deploy",
-  gulp.series(["clean", "lint", run("yarn webpack --release"), run("yarn surge ./build --domain andalusia.surge.sh")]),
+  gulp.series([
+    "clean",
+    "lint",
+    run("yarn webpack --release"),
+    run("yarn surge ./build --domain andalusia.omartawfik.com"),
+  ]),
 );
