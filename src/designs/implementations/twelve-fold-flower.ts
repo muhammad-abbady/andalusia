@@ -5,7 +5,7 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 import { BaseDesign } from "../base-design";
 import Two from "two.js";
 import { CancellationToken } from "../cancellation-token";
-import { pencilBrush, mainBorderBrush, highlightCircleBrush } from "../brushes";
+import { pencilBrush, mainBorderBrush } from "../brushes";
 import {
   intersectionBetweenTwoLines,
   intersectionBetweenLineAndCircle,
@@ -36,7 +36,7 @@ export class TwelveFoldFlowerDesign extends BaseDesign {
 
     const innerCircleDiagonal = await this.drawLine(diagonals[0].vertices[0], diagonals[3].vertices[0], pencilBrush);
     const innerCircleMarkerPosition = intersectionBetweenTwoLines(diagonals[1], innerCircleDiagonal);
-    const innerCircleMarker = await this.drawCircle(innerCircleMarkerPosition, 5, highlightCircleBrush);
+    const innerCircleMarker = this.drawMarker(innerCircleMarkerPosition);
     const innerCircleRadius = distanceBetweenTwoPoints(center, innerCircleMarkerPosition);
     const innerCircle = await this.drawCircle(center, innerCircleRadius, pencilBrush);
 

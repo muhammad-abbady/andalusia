@@ -28,26 +28,15 @@ export abstract class BaseDesign {
       return new Two.Circle(center.x, center.y, radius);
     }
 
-    const centerHighlight = this.scene.makeCircle(center.x, center.y, 3);
-    highlightCircleBrush.applyTo(centerHighlight);
-    this.scene.update();
+    const circleTop = new Two.Vector(center.x, center.y - radius);
+    const circleBottom = new Two.Vector(center.x, center.y + radius);
+    const animation1 = await this.drawCurve(center, circleTop, circleBottom, brush);
+    const animation2 = await this.drawCurve(center, circleBottom, circleTop, brush);
 
     const circle = this.scene.makeCircle(center.x, center.y, radius);
-    circle.scale = 0;
     brush.applyTo(circle);
 
-    const steps = 100 - this.speed;
-    const increment = 1 / steps;
-
-    for (let scale = 0; scale < 1; scale += increment) {
-      circle.scale = scale;
-      this.scene.update();
-      await this.sleep();
-    }
-
-    circle.scale = 1;
-    this.removeAndUpdate(centerHighlight);
-
+    this.removeAndUpdate(animation1, animation2);
     return circle;
   }
 
@@ -57,52 +46,49 @@ export abstract class BaseDesign {
       throw new Error("from and to are not equidistant from center.");
     }
 
-    const angleIncrement = radiansToAngle(
-      (2 * Math.asin(distanceBetweenTwoPoints(from, to) / (radius * 2))) / Two.Resolution,
-    );
+    const calculateAngle = (end: Two.Vector): number =>
+      radiansToAngle(2 * Math.asin(distanceBetweenTwoPoints(from, end) / (radius * 2))) || 360;
 
-    const points = Array<number>();
+    const calculatePoints = (end: Two.Vector): Two.Vector[] => {
+      const points = Array<Two.Vector>();
+      const angleIncrement = calculateAngle(end) / Two.Resolution;
 
-    let point = from;
-    for (let i = 0; i < Two.Resolution; i++) {
-      points.push(point.x, point.y);
-      point = rotatePoint(point, center, angleIncrement);
-    }
+      for (let i = 0; i <= Two.Resolution; i++) {
+        points.push(rotatePoint(from, center, angleIncrement * i));
+      }
 
-    points.push(point.x, point.y);
-    if (!areFloatsClose(point.x, to.x) || !areFloatsClose(point.y, to.y)) {
-      throw new Error("Curve calculation should have ended at to point.");
-    }
+      return points;
+    };
 
     if (this.shouldFakeShape(brush)) {
-      const vectors = Array<Two.Vector>();
-      for (let i = 0; i < points.length; i += 2) {
-        vectors.push(new Two.Vector(points[i], points[i + 1]));
-      }
-      return new Two.Path(vectors, false, true);
+      return new Two.Path(calculatePoints(to), false, true);
     }
 
-    const centerHighlight = this.scene.makeCircle(center.x, center.y, 3);
-    highlightCircleBrush.applyTo(centerHighlight);
-    this.scene.update();
+    const centerHighlight = this.drawMarker(center);
 
-    const curve = this.scene.makeCurve(...points, true);
-    curve.scale = 0;
-    brush.applyTo(curve);
+    const steps = this.calculateSteps();
+    const angleIncrement = calculateAngle(to) / steps;
 
-    const steps = 100 - this.speed;
-    const increment = 1 / steps;
+    for (let i = 0; i < steps; i++) {
+      const fromHighlight = this.drawMarker(from);
 
-    for (let scale = 0; scale < 1; scale += increment) {
-      curve.scale = scale;
-      this.scene.update();
+      const end = rotatePoint(from, center, angleIncrement * i);
+      const endHighlight = this.drawMarker(end);
+
+      const partialCurve = this.scene.makeCurve(calculatePoints(end), true);
+      brush.applyTo(partialCurve);
+
       await this.sleep();
+
+      this.removeAndUpdate(partialCurve, fromHighlight, endHighlight);
     }
 
-    curve.scale = 1;
+    const fullCurve = this.scene.makeCurve(calculatePoints(to), true);
+    brush.applyTo(fullCurve);
+
     this.removeAndUpdate(centerHighlight);
 
-    return curve;
+    return fullCurve;
   }
 
   protected async drawLine(from: Two.Vector, to: Two.Vector, brush: Brush): Promise<Two.Line> {
@@ -110,21 +96,17 @@ export abstract class BaseDesign {
       return new Two.Line(from.x, from.y, to.x, to.y);
     }
 
-    const fromHighlight = this.scene.makeCircle(from.x, from.y, 3);
-    highlightCircleBrush.applyTo(fromHighlight);
-
-    const toHighlight = this.scene.makeCircle(to.x, to.y, 3);
-    highlightCircleBrush.applyTo(toHighlight);
+    const fromHighlight = this.drawMarker(from);
+    const toHighlight = this.drawMarker(to);
 
     const line = this.scene.makeLine(from.x, from.y, from.x, from.y);
     brush.applyTo(line);
 
-    const steps = 100 - this.speed;
+    const steps = this.calculateSteps();
     const change = new Two.Vector((to.x - from.x) / steps, (to.y - from.y) / steps);
 
     for (let i = 0; i < steps; i++) {
       line.vertices[1].addSelf(change);
-      this.scene.update();
       await this.sleep();
     }
 
@@ -132,6 +114,14 @@ export abstract class BaseDesign {
     this.removeAndUpdate(fromHighlight, toHighlight);
 
     return line;
+  }
+
+  protected drawMarker(center: Two.Vector): Two.Circle {
+    const marker = this.scene.makeCircle(center.x, center.y, 3);
+    highlightCircleBrush.applyTo(marker);
+
+    this.scene.update();
+    return marker;
   }
 
   protected async drawWithRotatingPoint<T>(
@@ -144,13 +134,7 @@ export abstract class BaseDesign {
     const shapes = Array<T>();
 
     for (let i = 0; i < repetition; i++) {
-      shapes.push(await apply(points));
-
-      if (i + 1 < repetition) {
-        for (let j = 0; j < points.length; j++) {
-          points[j] = rotatePoint(points[j], center, angleDelta);
-        }
-      }
+      shapes.push(await apply(points.map(p => rotatePoint(p, center, i * angleDelta))));
     }
 
     return shapes;
@@ -162,9 +146,17 @@ export abstract class BaseDesign {
   }
 
   protected sleep(multipiler = 1): Promise<void> {
+    this.token.checkForCancellation();
+    this.scene.update();
+
     if (this.shouldAnimate) {
       return new Promise(resolve => {
-        setTimeout(resolve, ANIMATION_SLEEP * multipiler);
+        setTimeout(() => {
+          this.token.checkForCancellation();
+          this.scene.update();
+
+          resolve();
+        }, ANIMATION_SLEEP * multipiler);
       });
     }
 
@@ -173,5 +165,9 @@ export abstract class BaseDesign {
 
   private shouldFakeShape(brush: Brush): boolean {
     return !this.shouldAnimate && brush.isPencil;
+  }
+
+  private calculateSteps(): number {
+    return 100 - this.speed;
   }
 }

@@ -5,7 +5,7 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 import { BaseDesign } from "../base-design";
 import Two from "two.js";
 import { CancellationToken } from "../cancellation-token";
-import { pencilBrush, highlightCircleBrush, mainBorderBrush } from "../brushes";
+import { pencilBrush, mainBorderBrush } from "../brushes";
 import {
   rotatePoint,
   intersectionBetweenTwoLines,
@@ -65,7 +65,7 @@ export class TwentyFoldStarDesign extends BaseDesign {
     );
 
     const markerPosition = intersectionBetweenTwoLines(markerLine, midDiagonals[9]);
-    const marker = await this.drawCircle(markerPosition, 5, highlightCircleBrush);
+    const marker = await this.drawMarker(markerPosition);
 
     this.removeAndUpdate(markerLine);
 

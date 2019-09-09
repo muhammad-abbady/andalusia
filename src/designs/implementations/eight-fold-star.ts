@@ -5,7 +5,7 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 import { BaseDesign } from "../base-design";
 import Two from "two.js";
 import { CancellationToken } from "../cancellation-token";
-import { pencilBrush, mainBorderBrush, highlightCircleBrush } from "../brushes";
+import { pencilBrush, mainBorderBrush } from "../brushes";
 import {
   intersectionBetweenTwoLines,
   intersectionBetweenLineAndCircle,
@@ -55,7 +55,7 @@ export class EightFoldStarDesign extends BaseDesign {
     );
 
     const innerCircleTopPoint = intersectionBetweenTwoLines(diagonals[0], measurementLine);
-    const innerCircleMarker = await this.drawCircle(innerCircleTopPoint, 5, highlightCircleBrush);
+    const innerCircleMarker = this.drawMarker(innerCircleTopPoint);
 
     const innerCircleRadius = distanceBetweenTwoPoints(center, innerCircleTopPoint);
     const innerCircle = await this.drawCircle(center, innerCircleRadius, pencilBrush);
