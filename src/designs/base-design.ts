@@ -69,7 +69,7 @@ export abstract class BaseDesign {
     const steps = this.calculateSteps();
     const angleIncrement = calculateAngle(to) / steps;
 
-    for (let i = 0; i < steps; i++) {
+    for (let i = 1; i < steps; i++) {
       const fromHighlight = this.drawMarker(from);
 
       const end = rotatePoint(from, center, angleIncrement * i);
