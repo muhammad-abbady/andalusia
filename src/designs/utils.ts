@@ -13,7 +13,7 @@ export function radiansToAngle(radians: number): number {
 }
 
 export function areFloatsClose(a: number, b: number): boolean {
-  return Math.abs(a - b).toFixed(5) === "0.00000";
+  return Math.abs(a - b).toFixed(3) === "0.000";
 }
 
 export function distanceBetweenTwoPoints(p1: Two.Vector, p2: Two.Vector): number {

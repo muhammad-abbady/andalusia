@@ -11,6 +11,7 @@ import { TwelveFoldFlowerDesign } from "./implementations/twelve-fold-flower";
 import { ThirtyTwoFoldFlowerDesign } from "./implementations/thirty-two-fold-flower";
 import { EightFoldStarTessellationDesign } from "./implementations/eight-fold-star-tessellation";
 import { EightFoldStarDesign } from "./implementations/eight-fold-star";
+import { IntermingledSixteenFoldFlowerDesign } from "./implementations/intermingled-sixteen-fold-flower";
 
 export interface DesignFactory {
   readonly url: string;
@@ -25,15 +26,15 @@ export const factories: ReadonlyArray<DesignFactory> = [
     create: (scene, speed, token, shouldAnimate) => new EightFoldStarDesign(scene, speed, token, shouldAnimate),
   },
   {
+    url: "/designs/twelve-fold-star",
+    title: "Twelve-fold Star",
+    create: (scene, speed, token, shouldAnimate) => new TwelveFoldStarDesign(scene, speed, token, shouldAnimate),
+  },
+  {
     url: "/designs/eight-fold-star-tessellation",
     title: "Eight-fold Star Tessellation",
     create: (scene, speed, token, shouldAnimate) =>
       new EightFoldStarTessellationDesign(scene, speed, token, shouldAnimate),
-  },
-  {
-    url: "/designs/twelve-fold-star",
-    title: "Twelve-fold Star",
-    create: (scene, speed, token, shouldAnimate) => new TwelveFoldStarDesign(scene, speed, token, shouldAnimate),
   },
   {
     url: "/designs/twenty-fold-star",
@@ -49,5 +50,11 @@ export const factories: ReadonlyArray<DesignFactory> = [
     url: "/designs/thirty-two-fold-flower",
     title: "Thirty-two-fold Flower",
     create: (scene, speed, token, shouldAnimate) => new ThirtyTwoFoldFlowerDesign(scene, speed, token, shouldAnimate),
+  },
+  {
+    url: "/designs/intermingled-sixteen-fold-flower",
+    title: "Intermingled Sixteen-Fold Flower",
+    create: (scene, speed, token, shouldAnimate) =>
+      new IntermingledSixteenFoldFlowerDesign(scene, speed, token, shouldAnimate),
   },
 ];
