@@ -5,7 +5,7 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 import { BaseDesign } from "../base-design";
 import Two from "two.js";
 import { CancellationToken } from "../cancellation-token";
-import { pencilBrush, mainBorderBrush } from "../brushes";
+import { pencilBrush, borderBrush } from "../brushes";
 import {
   intersectionBetweenTwoLines,
   intersectionBetweenLineAndCircle,
@@ -69,7 +69,7 @@ export class TwelveFoldFlowerDesign extends BaseDesign {
       12,
       90 / 3,
       [intersectionWithInnerCircle, blueCurve1Start, diagonals[1].vertices[0]],
-      ([rCenter, rFrom, rTo]) => this.drawCurve(rCenter, rFrom, rTo, mainBorderBrush),
+      ([rCenter, rFrom, rTo]) => this.drawCurve(rCenter, rFrom, rTo, borderBrush),
     );
 
     const blueCurve2Start = new Two.Vector(blueCurve1Start.x, 2 * radius - blueCurve1Start.y);
@@ -79,7 +79,7 @@ export class TwelveFoldFlowerDesign extends BaseDesign {
       12,
       90 / 3,
       [intersectionWithInnerCircle, diagonals[5].vertices[0], blueCurve2Start],
-      ([rCenter, rFrom, rTo]) => this.drawCurve(rCenter, rFrom, rTo, mainBorderBrush),
+      ([rCenter, rFrom, rTo]) => this.drawCurve(rCenter, rFrom, rTo, borderBrush),
     );
 
     this.removeAndUpdate(outerCircle, ...diagonals, innerCircle, ...innerCurves);

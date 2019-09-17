@@ -5,7 +5,7 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 import { BaseDesign } from "../base-design";
 import Two from "two.js";
 import { CancellationToken } from "../cancellation-token";
-import { pencilBrush, mainBorderBrush } from "../brushes";
+import { pencilBrush, borderBrush } from "../brushes";
 import { intersectionBetweenTwoLines, intersectionBetweenLineAndCircle } from "../utils";
 
 // Source: https://www.youtube.com/watch?v=dXiYP-Ps8CQ
@@ -66,7 +66,7 @@ export class TwelveFoldStarDesign extends BaseDesign {
       12,
       90 / 3,
       [diagonals[0].vertices[0], intersectionBetweenTwoLines(translatedLines[0], hexagons[0])],
-      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, borderBrush),
     );
 
     await this.drawWithRotatingPoint(
@@ -74,7 +74,7 @@ export class TwelveFoldStarDesign extends BaseDesign {
       12,
       90 / 3,
       [diagonals[0].vertices[0], intersectionBetweenTwoLines(translatedLines[6], hexagons[10])],
-      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, borderBrush),
     );
 
     await this.drawWithRotatingPoint(
@@ -85,7 +85,7 @@ export class TwelveFoldStarDesign extends BaseDesign {
         intersectionBetweenTwoLines(translatedLines[0], hexagons[0]),
         intersectionBetweenTwoLines(translatedLines[0], translatedLines[10]),
       ],
-      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, borderBrush),
     );
 
     await this.drawWithRotatingPoint(
@@ -96,7 +96,7 @@ export class TwelveFoldStarDesign extends BaseDesign {
         intersectionBetweenTwoLines(translatedLines[6], hexagons[10]),
         intersectionBetweenTwoLines(diagonals[4], translatedLines[6]),
       ],
-      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, borderBrush),
     );
 
     this.removeAndUpdate(outerCircle, ...diagonals, ...squares, ...hexagons, ...translatedLines);

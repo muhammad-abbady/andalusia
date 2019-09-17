@@ -6,23 +6,34 @@ import Two from "two.js";
 
 export class Brush {
   public constructor(
-    public readonly opacity: number,
-    public readonly foreground: Two.Color,
+    public readonly foreground: string,
     public readonly lineWidth: number,
-    public readonly background: Two.Color,
+    public readonly background: string,
     public readonly isPencil: boolean,
-  ) {}
+  ) {
+    this.verifyColorValue(foreground);
+    this.verifyColorValue(background);
+  }
 
   public applyTo(shape: Two.Object): void {
-    shape.opacity = this.opacity;
     shape.stroke = this.foreground;
     shape.linewidth = this.lineWidth;
     shape.fill = this.background;
   }
+
+  private verifyColorValue(value: string): void {
+    if (!/(#[0-9A-F]{6})([0-9A-F]{2})?/.test(value)) {
+      throw new Error(`The color value ${value} is not formatted correctly.`);
+    }
+  }
 }
 
-export const highlightCircleBrush = new Brush(0.8, "red", 3, "pink", true);
-export const pencilBrush = new Brush(0.3, "black", 1, "transparent", true);
+export const highlightBrush = new Brush("#FF0000", 3, "#FFC0CB", true);
+export const pencilBrush = new Brush("#CCCCCC", 1, "#00000000", true);
 
-export const mainBorderBrush = new Brush(1, "#2ca8ff", 2, "transparent", false);
-export const blankBrush = new Brush(1, "white", 0, "white", false);
+export const blankBrush = new Brush("#FFFFFF", 0, "#FFFFFF", false);
+export const borderBrush = new Brush("#2CA8FF", 2, "#00000000", false);
+
+export const primaryColor = new Brush("#00000000", 0, "#111111", false);
+export const secondaryColor = new Brush("#00000000", 0, "#777777", false);
+export const shadeColor = new Brush("#00000000", 0, "#C8C8C8", false);

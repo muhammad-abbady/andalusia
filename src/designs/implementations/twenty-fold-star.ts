@@ -5,7 +5,7 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 import { BaseDesign } from "../base-design";
 import Two from "two.js";
 import { CancellationToken } from "../cancellation-token";
-import { pencilBrush, mainBorderBrush } from "../brushes";
+import { pencilBrush, borderBrush } from "../brushes";
 import {
   rotatePoint,
   intersectionBetweenTwoLines,
@@ -93,7 +93,7 @@ export class TwentyFoldStarDesign extends BaseDesign {
       20,
       90 / 5,
       [diagonals[0].vertices[0], intersectionBetweenTwoLines(allTranslatedLines[12], outerPentagonEdges[0])],
-      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, borderBrush),
     );
 
     await this.drawWithRotatingPoint(
@@ -101,7 +101,7 @@ export class TwentyFoldStarDesign extends BaseDesign {
       20,
       90 / 5,
       [intersectionBetweenTwoLines(allTranslatedLines[3], outerPentagonEdges[0]), outerPentagonEdges[0].vertices[1]],
-      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, borderBrush),
     );
 
     await this.drawWithRotatingPoint(
@@ -112,7 +112,7 @@ export class TwentyFoldStarDesign extends BaseDesign {
         intersectionBetweenTwoLines(allTranslatedLines[6], allTranslatedLines[12]),
         intersectionBetweenTwoLines(allTranslatedLines[12], outerPentagonEdges[0]),
       ],
-      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, borderBrush),
     );
 
     await this.drawWithRotatingPoint(
@@ -123,7 +123,7 @@ export class TwentyFoldStarDesign extends BaseDesign {
         rotatePoint(intersectionBetweenTwoLines(allTranslatedLines[6], allTranslatedLines[12]), center, 17 * (90 / 5)),
         intersectionBetweenTwoLines(allTranslatedLines[3], outerPentagonEdges[0]),
       ],
-      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, borderBrush),
     );
 
     this.removeAndUpdate(

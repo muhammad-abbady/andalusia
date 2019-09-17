@@ -4,7 +4,7 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 
 import Two from "two.js";
 import { CancellationToken } from "./cancellation-token";
-import { Brush, highlightCircleBrush } from "./brushes";
+import { Brush, highlightBrush } from "./brushes";
 import { rotatePoint, distanceBetweenTwoPoints, radiansToAngle, areFloatsClose } from "./utils";
 
 const ANIMATION_SLEEP = 20;
@@ -118,7 +118,7 @@ export abstract class BaseDesign {
 
   protected drawMarker(center: Two.Vector): Two.Circle {
     const marker = this.scene.makeCircle(center.x, center.y, 3);
-    highlightCircleBrush.applyTo(marker);
+    highlightBrush.applyTo(marker);
 
     this.scene.update();
     return marker;
@@ -161,6 +161,32 @@ export abstract class BaseDesign {
     }
 
     return Promise.resolve();
+  }
+
+  protected async colorArea(brush: Brush, ...points: Two.Vector[]): Promise<Two.Path> {
+    if (this.shouldFakeShape(brush)) {
+      return new Two.Path(points, true, false);
+    }
+
+    const getOpacity = (value: number): string =>
+      brush.background.substr(0, 7) +
+      Math.floor(value)
+        .toString(16)
+        .toUpperCase()
+        .padStart(2, "0");
+
+    const path = this.scene.makePath(points, false);
+    path.fill = getOpacity(0);
+    brush.applyTo(path);
+
+    const steps = this.calculateSteps();
+
+    for (let i = 0; i < steps; i++) {
+      path.fill = getOpacity(i * (256 / steps));
+      await this.sleep();
+    }
+
+    return path;
   }
 
   private shouldFakeShape(brush: Brush): boolean {

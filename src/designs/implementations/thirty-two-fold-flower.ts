@@ -5,7 +5,7 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 import { BaseDesign } from "../base-design";
 import Two from "two.js";
 import { CancellationToken } from "../cancellation-token";
-import { pencilBrush, mainBorderBrush } from "../brushes";
+import { pencilBrush, borderBrush } from "../brushes";
 import { distanceBetweenTwoPoints, intersectionBetweenTwoCircles, rotatePoint } from "../utils";
 
 // Source: https://www.youtube.com/watch?v=Vm487exe_Pc
@@ -73,7 +73,7 @@ export class ThirtyTwoFoldFlowerDesign extends BaseDesign {
       32,
       90 / 8,
       [curve1Center, intersectionWithInnerCircle, curve1To],
-      ([rCenter, rFrom, rTo]) => this.drawCurve(rCenter, rFrom, rTo, mainBorderBrush),
+      ([rCenter, rFrom, rTo]) => this.drawCurve(rCenter, rFrom, rTo, borderBrush),
     );
 
     await this.drawWithRotatingPoint(
@@ -85,7 +85,7 @@ export class ThirtyTwoFoldFlowerDesign extends BaseDesign {
         curve1From,
         new Two.Vector(intersectionWithInnerCircle.x, 2 * radius - intersectionWithInnerCircle.y),
       ],
-      ([rCenter, rFrom, rTo]) => this.drawCurve(rCenter, rFrom, rTo, mainBorderBrush),
+      ([rCenter, rFrom, rTo]) => this.drawCurve(rCenter, rFrom, rTo, borderBrush),
     );
 
     this.removeAndUpdate(outerCircle, ...diagonals, ...squares, ...curves, innerCircle);

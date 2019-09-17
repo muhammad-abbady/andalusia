@@ -5,7 +5,7 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 import { BaseDesign } from "../base-design";
 import Two from "two.js";
 import { CancellationToken } from "../cancellation-token";
-import { pencilBrush, mainBorderBrush } from "../brushes";
+import { pencilBrush, borderBrush, primaryColor, secondaryColor } from "../brushes";
 import {
   intersectionBetweenTwoLines,
   intersectionBetweenLineAndCircle,
@@ -80,7 +80,7 @@ export class EightFoldStarDesign extends BaseDesign {
       8,
       45,
       [diagonals[0].vertices[0], intersectionBetweenTwoLines(translatedLines[0], octagon[0])],
-      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, borderBrush),
     );
 
     await this.drawWithRotatingPoint(
@@ -88,7 +88,7 @@ export class EightFoldStarDesign extends BaseDesign {
       8,
       45,
       [diagonals[0].vertices[0], intersectionBetweenTwoLines(translatedLines[4], octagon[7])],
-      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, borderBrush),
     );
 
     await this.drawWithRotatingPoint(
@@ -99,7 +99,7 @@ export class EightFoldStarDesign extends BaseDesign {
         intersectionBetweenTwoLines(translatedLines[0], octagon[0]),
         intersectionBetweenTwoLines(translatedLines[0], translatedLines[7]),
       ],
-      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, borderBrush),
     );
 
     await this.drawWithRotatingPoint(
@@ -110,7 +110,35 @@ export class EightFoldStarDesign extends BaseDesign {
         intersectionBetweenTwoLines(translatedLines[0], octagon[3]),
         intersectionBetweenTwoLines(translatedLines[0], translatedLines[1]),
       ],
-      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, borderBrush),
+    );
+
+    await this.drawWithRotatingPoint(
+      center,
+      8,
+      45,
+      [
+        intersectionBetweenTwoLines(translatedLines[0], translatedLines[5]),
+        intersectionBetweenTwoLines(translatedLines[0], translatedLines[6]),
+        intersectionBetweenTwoLines(translatedLines[6], translatedLines[7]),
+        intersectionBetweenTwoLines(translatedLines[5], translatedLines[7]),
+      ],
+      points => this.colorArea(primaryColor, ...points),
+    );
+
+    await this.drawWithRotatingPoint(
+      center,
+      8,
+      45,
+      [
+        intersectionBetweenTwoLines(translatedLines[0], translatedLines[5]),
+        intersectionBetweenTwoLines(octagon[0], translatedLines[5]),
+        intersectionBetweenTwoLines(octagon[0], diagonals[1]),
+        intersectionBetweenTwoLines(octagon[1], translatedLines[1]),
+        intersectionBetweenTwoLines(translatedLines[1], translatedLines[6]),
+        intersectionBetweenTwoLines(translatedLines[0], translatedLines[6]),
+      ],
+      points => this.colorArea(secondaryColor, ...points),
     );
 
     this.removeAndUpdate(outerCircle, ...diagonals, ...octagon, ...squares, innerCircle, ...translatedLines);

@@ -5,7 +5,7 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 import { BaseDesign } from "../base-design";
 import Two, { Vector } from "two.js";
 import { CancellationToken } from "../cancellation-token";
-import { pencilBrush, mainBorderBrush, Brush, blankBrush } from "../brushes";
+import { pencilBrush, borderBrush, Brush, blankBrush } from "../brushes";
 import { intersectionBetweenTwoLines, rotatePoint, angleToRadians } from "../utils";
 import { EightFoldStarDesign } from "./eight-fold-star";
 
@@ -50,7 +50,7 @@ export class EightFoldStarTessellationDesign extends BaseDesign {
       4,
       90,
       [new Two.Vector(cellSize / 2, cellSize / 2), new Two.Vector(2.5 * cellSize, cellSize / 2)],
-      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, mainBorderBrush),
+      ([rFrom, rTo]) => this.drawLine(rFrom, rTo, borderBrush),
     );
 
     this.removeAndUpdate(...grid);
@@ -139,8 +139,8 @@ export class EightFoldStarTessellationDesign extends BaseDesign {
       ...(await drawLinesTranslated(to, new Two.Vector(from.x + cellSize, from.y), pencilBrush)),
     ];
 
-    await drawLinesTranslated(to, fromRotated, mainBorderBrush);
-    await drawLinesTranslated(to, rotatePoint(fromRotated, center, 90), mainBorderBrush);
+    await drawLinesTranslated(to, fromRotated, borderBrush);
+    await drawLinesTranslated(to, rotatePoint(fromRotated, center, 90), borderBrush);
 
     this.removeAndUpdate(...measurementLines);
   }
