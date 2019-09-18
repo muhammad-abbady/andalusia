@@ -49,12 +49,12 @@ export class DesignCardComponent extends React.Component<DesignCardProps> {
         <CardBody>
           <div ref={this.sceneRef} />
         </CardBody>
-        {this.props.showFooterLink ? (
+        {this.props.showFooterLink && this.props.factory.attribution ? (
           <CardFooter>
             <h6>
               Original design by&nbsp;
-              <a href={this.props.factory.designLink} target="_blank" rel="noreferrer noopener">
-                {this.props.factory.designAuthor}
+              <a href={this.props.factory.attribution.link} target="_blank" rel="noreferrer noopener">
+                {this.props.factory.attribution.author}
               </a>
             </h6>
           </CardFooter>
