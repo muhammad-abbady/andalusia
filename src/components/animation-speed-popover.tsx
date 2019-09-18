@@ -40,6 +40,6 @@ export class AnimationSpeedPopoverComponent extends React.Component<AnimationSpe
   }
 
   public render(): React.ReactElement {
-    return <div className="slider" id="sliderRegular" ref={this.speedDivRef}></div>;
+    return <div className="slider" ref={this.speedDivRef}></div>;
   }
 }

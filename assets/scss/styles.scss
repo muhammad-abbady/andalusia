@@ -4,9 +4,19 @@ $primary-color: #2ca8ff !default;
 // Import toolkot
 @import "./now-ui-kit";
 
-// Rest of the stypes
+// Rest of the styles
 .home-background-image {
   background-image: url(../images/home-background.jpg);
+}
+
+.card-title {
+  color: #2ca8ff;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.card-body {
+  padding: 5px;
 }
 
 .index-page {
@@ -28,6 +38,6 @@ $primary-color: #2ca8ff !default;
 
 .inner-page {
   .view-page-container {
-    width: 80vmin;
+    width: 85vmin;
   }
 }

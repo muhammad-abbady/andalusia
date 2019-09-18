@@ -152,9 +152,7 @@ export abstract class BaseDesign {
     if (this.shouldAnimate) {
       return new Promise(resolve => {
         setTimeout(() => {
-          this.token.checkForCancellation();
           this.scene.update();
-
           resolve();
         }, ANIMATION_SLEEP * multipiler);
       });

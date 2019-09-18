@@ -71,7 +71,7 @@ export class ViewPageComponent extends React.Component<ViewPageComponentProps, V
                     </NavLink>
                   </NavItem>
                 </Nav>
-                <UncontrolledPopover placement="bottom" target="animation-speed-button">
+                <UncontrolledPopover trigger="legacy" placement="bottom" target="animation-speed-button">
                   <PopoverHeader>Animation Speed</PopoverHeader>
                   <PopoverBody>
                     <AnimationSpeedPopoverComponent
@@ -86,15 +86,13 @@ export class ViewPageComponent extends React.Component<ViewPageComponentProps, V
               </Collapse>
             </Container>
           </Navbar>
-          <div className="section">
-            <Container className="view-page-container">
-              <Row>
-                <Col className="ml-auto mr-auto" xs="12" sm="12" md="12" lg="12">
-                  <DesignCardComponent factory={this.props.factory} speed={this.state.speed} shouldAnimate={true} />
-                </Col>
-              </Row>
-            </Container>
-          </div>
+          <Container className="view-page-container">
+            <Row>
+              <Col className="ml-auto mr-auto" xs="12" sm="12" md="12" lg="12">
+                <DesignCardComponent factory={this.props.factory} speed={this.state.speed} shouldAnimate={true} />
+              </Col>
+            </Row>
+          </Container>
         </div>
       </div>
     );

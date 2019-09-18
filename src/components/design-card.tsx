@@ -73,12 +73,7 @@ export class DesignCardComponent extends React.Component<DesignCardProps> {
     };
 
     this.token = new CancellationToken();
-    const scene = new Two(params).appendTo(this.sceneRef.current).bind("update", () => {
-      if (this.token) {
-        // In case it was cancelled after animation stopped
-        this.token.checkForCancellation();
-      }
-    });
+    const scene = new Two(params).appendTo(this.sceneRef.current);
 
     // Start rendering
     this.props.factory
