@@ -7,14 +7,12 @@ import Two from "two.js";
 import { CancellationToken } from "../cancellation-token";
 import { pencilBrush, mainBorderBrush } from "../brushes";
 import {
-  intersectionBetweenTwoLines,
   intersectionBetweenLineAndCircle,
   rotatePoint,
   intersectionBetweenTwoCircles,
   distanceBetweenTwoPoints,
 } from "../utils";
 
-// Source: https://www.youtube.com/watch?v=KnBX5E7gRIY
 export class IntermingledSixteenFoldFlowerDesign extends BaseDesign {
   public constructor(scene: Two, speed: number, token: CancellationToken, shouldAnimate: boolean) {
     super(scene, speed, token, shouldAnimate);

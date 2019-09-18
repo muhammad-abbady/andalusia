@@ -9,7 +9,6 @@ import { pencilBrush, mainBorderBrush, Brush, blankBrush } from "../brushes";
 import { intersectionBetweenTwoLines, rotatePoint, angleToRadians } from "../utils";
 import { EightFoldStarDesign } from "./eight-fold-star";
 
-// Source: https://www.youtube.com/watch?v=fXM8jSGFz0g
 export class EightFoldStarTessellationDesign extends BaseDesign {
   public constructor(scene: Two, speed: number, token: CancellationToken, shouldAnimate: boolean) {
     super(scene, speed, token, shouldAnimate);

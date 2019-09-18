@@ -19,6 +19,11 @@ $primary-color: #2ca8ff !default;
   padding: 5px;
 }
 
+.card-footer h6 {
+  text-align: center;
+  font-weight: normal;
+}
+
 .index-page {
   .home-page-buttons {
     > a {

@@ -3,7 +3,7 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 **********************************************************************************************/
 
 import * as React from "react";
-import { Card, CardBody, CardHeader, CardTitle } from "reactstrap";
+import { Card, CardBody, CardHeader, CardTitle, CardFooter } from "reactstrap";
 import { CancellationToken, RENDER_CANCELLATION_MESSAGE } from "../designs/cancellation-token";
 import { DesignFactory } from "../designs/factories";
 import Two from "two.js";
@@ -12,6 +12,7 @@ interface DesignCardProps {
   readonly factory: DesignFactory;
   readonly speed: number;
   readonly shouldAnimate: boolean;
+  readonly showFooterLink: boolean;
 }
 
 export class DesignCardComponent extends React.Component<DesignCardProps> {
@@ -48,6 +49,16 @@ export class DesignCardComponent extends React.Component<DesignCardProps> {
         <CardBody>
           <div ref={this.sceneRef} />
         </CardBody>
+        {this.props.showFooterLink ? (
+          <CardFooter>
+            <h6>
+              Original design by&nbsp;
+              <a href={this.props.factory.designLink} target="_blank" rel="noreferrer noopener">
+                {this.props.factory.designAuthor}
+              </a>
+            </h6>
+          </CardFooter>
+        ) : null}
       </Card>
     );
   }

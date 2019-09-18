@@ -14,7 +14,6 @@ import {
   rotatePoint,
 } from "../utils";
 
-// Source: https://www.youtube.com/watch?v=mCCWntbIHf0
 export class TwelveFoldFlowerDesign extends BaseDesign {
   public constructor(scene: Two, speed: number, token: CancellationToken, shouldAnimate: boolean) {
     super(scene, speed, token, shouldAnimate);

@@ -13,7 +13,6 @@ import {
   rotatePoint,
 } from "../utils";
 
-// Source: https://www.youtube.com/watch?v=fXM8jSGFz0g
 export class EightFoldStarDesign extends BaseDesign {
   public constructor(scene: Two, speed: number, token: CancellationToken, shouldAnimate: boolean) {
     super(scene, speed, token, shouldAnimate);

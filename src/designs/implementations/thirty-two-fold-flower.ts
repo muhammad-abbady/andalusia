@@ -8,7 +8,6 @@ import { CancellationToken } from "../cancellation-token";
 import { pencilBrush, mainBorderBrush } from "../brushes";
 import { distanceBetweenTwoPoints, intersectionBetweenTwoCircles, rotatePoint } from "../utils";
 
-// Source: https://www.youtube.com/watch?v=Vm487exe_Pc
 export class ThirtyTwoFoldFlowerDesign extends BaseDesign {
   public constructor(scene: Two, speed: number, token: CancellationToken, shouldAnimate: boolean) {
     super(scene, speed, token, shouldAnimate);

@@ -8,7 +8,6 @@ import { CancellationToken } from "../cancellation-token";
 import { pencilBrush, mainBorderBrush } from "../brushes";
 import { intersectionBetweenTwoLines, intersectionBetweenLineAndCircle } from "../utils";
 
-// Source: https://www.youtube.com/watch?v=dXiYP-Ps8CQ
 export class TwelveFoldStarDesign extends BaseDesign {
   public constructor(scene: Two, speed: number, token: CancellationToken, shouldAnimate: boolean) {
     super(scene, speed, token, shouldAnimate);

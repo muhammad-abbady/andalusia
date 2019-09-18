@@ -13,7 +13,6 @@ import {
   distanceBetweenTwoPoints,
 } from "../utils";
 
-// Source: https://www.youtube.com/watch?v=Pl07JqrTL-c
 export class TwentyFoldStarDesign extends BaseDesign {
   public constructor(scene: Two, speed: number, token: CancellationToken, shouldAnimate: boolean) {
     super(scene, speed, token, shouldAnimate);
