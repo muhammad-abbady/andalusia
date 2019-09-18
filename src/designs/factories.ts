@@ -12,6 +12,7 @@ import { ThirtyTwoFoldFlowerDesign } from "./implementations/thirty-two-fold-flo
 import { EightFoldStarTessellationDesign } from "./implementations/eight-fold-star-tessellation";
 import { EightFoldStarDesign } from "./implementations/eight-fold-star";
 import { IntermingledSixteenFoldFlowerDesign } from "./implementations/intermingled-sixteen-fold-flower";
+import { ExtendedTwelveFoldStarDesign } from "./implementations/extended-twelve-fold-star";
 
 export interface DesignFactory {
   readonly url: string;
@@ -30,6 +31,14 @@ export const factories: ReadonlyArray<DesignFactory> = [
     create: (scene, speed, token, shouldAnimate) => new EightFoldStarDesign(scene, speed, token, shouldAnimate),
   },
   {
+    url: "/designs/eight-fold-star-tessellation",
+    title: "Eight-fold Star Tessellation",
+    designAuthor: "Nora Youssef",
+    designLink: "https://www.youtube.com/watch?v=fXM8jSGFz0g",
+    create: (scene, speed, token, shouldAnimate) =>
+      new EightFoldStarTessellationDesign(scene, speed, token, shouldAnimate),
+  },
+  {
     url: "/designs/twelve-fold-star",
     title: "Twelve-fold Star",
     designAuthor: "Nora Youssef",
@@ -37,12 +46,12 @@ export const factories: ReadonlyArray<DesignFactory> = [
     create: (scene, speed, token, shouldAnimate) => new TwelveFoldStarDesign(scene, speed, token, shouldAnimate),
   },
   {
-    url: "/designs/eight-fold-star-tessellation",
-    title: "Eight-fold Star Tessellation",
-    designAuthor: "Nora Youssef",
-    designLink: "https://www.youtube.com/watch?v=fXM8jSGFz0g",
+    url: "/designs/extended-twelve-fold-star",
+    title: "Extended Twelve-fold Star",
+    designAuthor: "Lex Wilson",
+    designLink: "https://www.youtube.com/watch?v=b0gdqkTYDCY",
     create: (scene, speed, token, shouldAnimate) =>
-      new EightFoldStarTessellationDesign(scene, speed, token, shouldAnimate),
+      new ExtendedTwelveFoldStarDesign(scene, speed, token, shouldAnimate),
   },
   {
     url: "/designs/twenty-fold-star",
@@ -59,18 +68,18 @@ export const factories: ReadonlyArray<DesignFactory> = [
     create: (scene, speed, token, shouldAnimate) => new TwelveFoldFlowerDesign(scene, speed, token, shouldAnimate),
   },
   {
-    url: "/designs/thirty-two-fold-flower",
-    title: "Thirty-two-fold Flower",
-    designAuthor: "Nora Youssef",
-    designLink: "https://www.youtube.com/watch?v=Vm487exe_Pc",
-    create: (scene, speed, token, shouldAnimate) => new ThirtyTwoFoldFlowerDesign(scene, speed, token, shouldAnimate),
-  },
-  {
     url: "/designs/intermingled-sixteen-fold-flower",
     title: "Intermingled Sixteen-Fold Flower",
     designAuthor: "Nora Youssef",
     designLink: "https://www.youtube.com/watch?v=KnBX5E7gRIY",
     create: (scene, speed, token, shouldAnimate) =>
       new IntermingledSixteenFoldFlowerDesign(scene, speed, token, shouldAnimate),
+  },
+  {
+    url: "/designs/thirty-two-fold-flower",
+    title: "Thirty-two-fold Flower",
+    designAuthor: "Nora Youssef",
+    designLink: "https://www.youtube.com/watch?v=Vm487exe_Pc",
+    create: (scene, speed, token, shouldAnimate) => new ThirtyTwoFoldFlowerDesign(scene, speed, token, shouldAnimate),
   },
 ];
