@@ -29,7 +29,7 @@ export class EightFoldStarTessellationDesign extends BaseDesign {
       }
     }
 
-    await this.sleep(25);
+    await this.sleep(true);
 
     for (let i = 0; i < 2; i++) {
       for (let j = 0; j < 2; j++) {
@@ -42,7 +42,7 @@ export class EightFoldStarTessellationDesign extends BaseDesign {
     blankBrush.applyTo(this.scene.makeRectangle(center.x, (cellSize * 11) / 4, this.scene.width, cellSize / 2));
     blankBrush.applyTo(this.scene.makeRectangle(cellSize / 4, center.y, cellSize / 2, this.scene.height));
 
-    await this.sleep(25);
+    await this.sleep(true);
 
     await this.drawWithRotatingPoint(
       center,

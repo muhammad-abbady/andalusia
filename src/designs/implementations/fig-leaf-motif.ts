@@ -255,7 +255,7 @@ export class FigLeafMotifDesign extends BaseDesign {
 
     if (this.shouldAnimate) {
       await new FigLeafTile(this.scene, this.speed, this.token, this.shouldAnimate).render();
-      await this.sleep(25);
+      await this.sleep(true);
       this.scene.clear();
     }
 

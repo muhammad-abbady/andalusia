@@ -7,7 +7,8 @@ import { CancellationToken } from "./cancellation-token";
 import { Brush, highlightCircleBrush } from "./brushes";
 import { rotatePoint, distanceBetweenTwoPoints, radiansToAngle, areFloatsClose } from "./utils";
 
-const ANIMATION_SLEEP = 20;
+const SHORT_ANIMATION_PAUSE = 20;
+const LONG_ANIMATION_PAUSE = 2000;
 
 export abstract class BaseDesign {
   public abstract render(): Promise<void>;
@@ -145,16 +146,19 @@ export abstract class BaseDesign {
     this.scene.update();
   }
 
-  protected sleep(multipiler = 1): Promise<void> {
+  protected sleep(longPause = false): Promise<void> {
     this.token.checkForCancellation();
     this.scene.update();
 
     if (this.shouldAnimate) {
       return new Promise(resolve => {
-        setTimeout(() => {
-          this.scene.update();
-          resolve();
-        }, ANIMATION_SLEEP * multipiler);
+        setTimeout(
+          () => {
+            this.scene.update();
+            resolve();
+          },
+          longPause ? LONG_ANIMATION_PAUSE : SHORT_ANIMATION_PAUSE,
+        );
       });
     }
 
