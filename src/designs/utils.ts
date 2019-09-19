@@ -31,10 +31,14 @@ export function rotatePoint(point: Two.Vector, origin: Two.Vector, angle: number
 }
 
 export function angleBetween(center: Two.Vector, p1: Two.Vector, p2: Two.Vector): number {
-  const a = distanceBetweenTwoPoints(center, p1);
-  const b = distanceBetweenTwoPoints(center, p2);
-  const c = distanceBetweenTwoPoints(p1, p2);
-  return Math.acos((a * a + c * c - b * b) / (2 * a * c));
+  const radius = distanceBetweenTwoPoints(center, p1);
+  if (!areFloatsClose(radius, distanceBetweenTwoPoints(center, p2))) {
+    throw new Error("Points are not equidistant from each other.");
+  }
+
+  const distance = distanceBetweenTwoPoints(p1, p2);
+  const angle = Math.acos((2 * radius * radius - distance * distance) / (2 * radius * radius));
+  return radiansToAngle(angle);
 }
 
 export function intersectionBetweenTwoLines(line1: Two.Line, line2: Two.Line): Two.Vector {

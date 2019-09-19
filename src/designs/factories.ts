@@ -15,6 +15,7 @@ import { IntermingledSixteenFoldFlowerDesign } from "./implementations/interming
 import { ExtendedTwelveFoldStarDesign } from "./implementations/extended-twelve-fold-star";
 import { FigLeafMotifDesign } from "./implementations/fig-leaf-motif";
 import { IntermingledSquaresDesign } from "./implementations/intermingled-squares";
+import { MoroccanMotifDesign } from "./implementations/moroccan-motif";
 
 export interface DesignFactory {
   readonly url: string;
@@ -115,5 +116,14 @@ export const factories: ReadonlyArray<DesignFactory> = [
       link: "https://www.youtube.com/watch?v=qXvflNNCWx4",
     },
     create: (scene, speed, token, shouldAnimate) => new FigLeafMotifDesign(scene, speed, token, shouldAnimate),
+  },
+  {
+    url: "/designs/moroccan-motif",
+    title: "Moroccan Motif",
+    attribution: {
+      author: "Samira Mian",
+      link: "https://www.youtube.com/watch?v=paZOEzN6cws",
+    },
+    create: (scene, speed, token, shouldAnimate) => new MoroccanMotifDesign(scene, speed, token, shouldAnimate),
   },
 ];
