@@ -23,6 +23,6 @@ export class Brush {
 
 export const highlightCircleBrush = new Brush(0.8, "red", 3, "pink", true);
 export const pencilBrush = new Brush(0.3, "black", 1, "transparent", true);
-
+export const highlightCenterBrush = new Brush(1, "#777777", 1, "#EEEEEE", false);
 export const mainBorderBrush = new Brush(1, "#2ca8ff", 2, "transparent", false);
 export const blankBrush = new Brush(1, "white", 0, "white", false);

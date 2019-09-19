@@ -13,6 +13,7 @@ import { EightFoldStarTessellationDesign } from "./implementations/eight-fold-st
 import { EightFoldStarDesign } from "./implementations/eight-fold-star";
 import { IntermingledSixteenFoldFlowerDesign } from "./implementations/intermingled-sixteen-fold-flower";
 import { ExtendedTwelveFoldStarDesign } from "./implementations/extended-twelve-fold-star";
+import { FigLeafMotifDesign } from "./implementations/fig-leaf-motif";
 
 export interface DesignFactory {
   readonly url: string;
@@ -99,5 +100,14 @@ export const factories: ReadonlyArray<DesignFactory> = [
       link: "https://www.youtube.com/watch?v=Vm487exe_Pc",
     },
     create: (scene, speed, token, shouldAnimate) => new ThirtyTwoFoldFlowerDesign(scene, speed, token, shouldAnimate),
+  },
+  {
+    url: "/designs/fig-leaf-motif",
+    title: "Fig Leaf Motif",
+    attribution: {
+      author: "Samira Mian",
+      link: "https://www.youtube.com/watch?v=qXvflNNCWx4",
+    },
+    create: (scene, speed, token, shouldAnimate) => new FigLeafMotifDesign(scene, speed, token, shouldAnimate),
   },
 ];
