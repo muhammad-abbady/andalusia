@@ -14,6 +14,7 @@ import { EightFoldStarDesign } from "./implementations/eight-fold-star";
 import { IntermingledSixteenFoldFlowerDesign } from "./implementations/intermingled-sixteen-fold-flower";
 import { ExtendedTwelveFoldStarDesign } from "./implementations/extended-twelve-fold-star";
 import { FigLeafMotifDesign } from "./implementations/fig-leaf-motif";
+import { IntermingledSquaresDesign } from "./implementations/intermingled-squares";
 
 export interface DesignFactory {
   readonly url: string;
@@ -100,6 +101,11 @@ export const factories: ReadonlyArray<DesignFactory> = [
       link: "https://www.youtube.com/watch?v=Vm487exe_Pc",
     },
     create: (scene, speed, token, shouldAnimate) => new ThirtyTwoFoldFlowerDesign(scene, speed, token, shouldAnimate),
+  },
+  {
+    url: "/designs/intermingled-squares",
+    title: "Ingermingled Squares",
+    create: (scene, speed, token, shouldAnimate) => new IntermingledSquaresDesign(scene, speed, token, shouldAnimate),
   },
   {
     url: "/designs/fig-leaf-motif",

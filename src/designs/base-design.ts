@@ -4,7 +4,7 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 
 import Two from "two.js";
 import { CancellationToken } from "./cancellation-token";
-import { Brush, highlightCircleBrush } from "./brushes";
+import { Brush, markerBrush } from "./brushes";
 import { rotatePoint, distanceBetweenTwoPoints, radiansToAngle, areFloatsClose } from "./utils";
 
 const SHORT_ANIMATION_PAUSE = 20;
@@ -119,7 +119,7 @@ export abstract class BaseDesign {
 
   protected drawMarker(center: Two.Vector): Two.Circle {
     const marker = this.scene.makeCircle(center.x, center.y, 3);
-    highlightCircleBrush.applyTo(marker);
+    markerBrush.applyTo(marker);
 
     this.scene.update();
     return marker;

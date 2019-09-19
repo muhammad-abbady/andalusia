@@ -5,7 +5,7 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 import { BaseDesign } from "../base-design";
 import Two, { Vector } from "two.js";
 import { CancellationToken } from "../cancellation-token";
-import { pencilBrush, mainBorderBrush, highlightCenterBrush } from "../brushes";
+import { pencilBrush, mainBorderBrush, tessellationCenterBrush } from "../brushes";
 import { intersectionBetweenTwoLines, intersectionBetweenLineAndCircle, rotatePoint } from "../utils";
 
 class FigLeafTile extends BaseDesign {
@@ -260,7 +260,7 @@ export class FigLeafMotifDesign extends BaseDesign {
     }
 
     const center = this.calculateCenterPoint();
-    highlightCenterBrush.applyTo(this.scene.makeRectangle(center.x, center.y, tileSize, tileSize));
+    tessellationCenterBrush.applyTo(this.scene.makeRectangle(center.x, center.y, tileSize, tileSize));
 
     const tileScene = new Two({
       width: tileSize,
