@@ -4,6 +4,7 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 
 import { BaseDesign } from "./base-design";
 import { TwentyFoldStarDesign } from "./implementations/twenty-fold-star";
+import { FourFoldStarDesign } from "./implementations/four-fold-star";
 import { CancellationToken } from "./cancellation-token";
 import Two from "two.js";
 import { TwelveFoldStarDesign } from "./implementations/twelve-fold-star";
@@ -28,6 +29,15 @@ export interface DesignFactory {
 }
 
 export const factories: ReadonlyArray<DesignFactory> = [
+  {
+    url: "/designs/four-fold-star",
+    title: "Four-fold Star",
+    attribution: {
+      author: "Muhammad Abbady",
+      link: "https://www.instagram.com/muhammadabbady/",
+    },
+    create: (scene, speed, token, shouldAnimate) => new FourFoldStarDesign(scene, speed, token, shouldAnimate),
+  },
   {
     url: "/designs/eight-fold-star",
     title: "Eight-fold Star",
