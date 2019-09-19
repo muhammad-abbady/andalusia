@@ -17,6 +17,7 @@ import { ExtendedTwelveFoldStarDesign } from "./implementations/extended-twelve-
 import { FigLeafMotifDesign } from "./implementations/fig-leaf-motif";
 import { IntermingledSquaresDesign } from "./implementations/intermingled-squares";
 import { MoroccanMotifDesign } from "./implementations/moroccan-motif";
+import { SheikhZayedMasjidSkylightDesign } from "./implementations/sheikh-zayed-masjid-skylight";
 
 export interface DesignFactory {
   readonly url: string;
@@ -112,6 +113,16 @@ export const factories: ReadonlyArray<DesignFactory> = [
       link: "https://www.youtube.com/watch?v=Vm487exe_Pc",
     },
     create: (scene, speed, token, shouldAnimate) => new ThirtyTwoFoldFlowerDesign(scene, speed, token, shouldAnimate),
+  },
+  {
+    url: "/designs/sheikh-zayed-masjid-skylight",
+    title: "Sheikh Zayed Masjid Skylight Design",
+    attribution: {
+      author: "Samira Mian",
+      link: "https://www.youtube.com/watch?v=FbyzlIZBS6w",
+    },
+    create: (scene, speed, token, shouldAnimate) =>
+      new SheikhZayedMasjidSkylightDesign(scene, speed, token, shouldAnimate),
   },
   {
     url: "/designs/intermingled-squares",
