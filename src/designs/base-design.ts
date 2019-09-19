@@ -4,11 +4,11 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 
 import Two from "two.js";
 import { CancellationToken } from "./cancellation-token";
-import { Brush, markerBrush } from "./brushes";
+import { Brush, markerBrush, pencilBrush } from "./brushes";
 import { rotatePoint, distanceBetweenTwoPoints, radiansToAngle, areFloatsClose } from "./utils";
 
 const SHORT_ANIMATION_PAUSE = 20;
-const LONG_ANIMATION_PAUSE = 2000;
+const LONG_ANIMATION_PAUSE = 1000;
 
 export abstract class BaseDesign {
   public abstract render(): Promise<void>;
@@ -149,6 +149,18 @@ export abstract class BaseDesign {
     }
 
     return shapes;
+  }
+
+  protected drawGrid(cellCount: number, cellSize: number): Two.Line[] {
+    const grid = Array<Two.Line>();
+
+    for (let i = 0; i <= cellCount; i++) {
+      grid.push(this.scene.makeLine(0, i * cellSize, this.scene.width, i * cellSize));
+      grid.push(this.scene.makeLine(i * cellSize, 0, i * cellSize, this.scene.height));
+    }
+
+    grid.forEach(line => pencilBrush.applyTo(line));
+    return grid;
   }
 
   protected removeAndUpdate(...shapes: Two.Object[]): void {

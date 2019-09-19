@@ -3,7 +3,7 @@ Licensed under the MIT License. See LICENSE file in the project root for license
 **********************************************************************************************/
 
 import { BaseDesign } from "../base-design";
-import Two, { Vector } from "two.js";
+import Two from "two.js";
 import { CancellationToken } from "../cancellation-token";
 import { pencilBrush, mainBorderBrush, Brush, blankBrush } from "../brushes";
 import { intersectionBetweenTwoLines, rotatePoint, angleToRadians } from "../utils";
@@ -16,11 +16,12 @@ export class EightFoldStarTessellationDesign extends BaseDesign {
 
   public async render(): Promise<void> {
     const center = this.calculateCenterPoint();
-    const cellSize = this.scene.width / 3;
+    const cellCount = 3;
+    const cellSize = this.scene.width / cellCount;
 
-    const grid = await this.drawGrid(center, cellSize);
-
+    const grid = this.drawGrid(cellCount, cellSize);
     const starGroup = await this.cloneStar(cellSize);
+
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
         const star = starGroup.clone();
@@ -58,48 +59,6 @@ export class EightFoldStarTessellationDesign extends BaseDesign {
     this.scene.scene.rotation = angleToRadians(45);
     this.scene.scene.translation = new Two.Vector(center.x - newCenter.x, center.y - newCenter.y);
     this.scene.update();
-  }
-
-  private async drawGrid(center: Two.Vector, cellSize: number): Promise<Two.Line[]> {
-    const grid = Array<Two.Line>();
-
-    for (let i = 0; i < 6; i++) {
-      grid.push(
-        await this.drawLine(
-          new Two.Vector(0, (i * center.y) / 3),
-          new Two.Vector(this.scene.width, (i * center.y) / 3),
-          pencilBrush,
-        ),
-      );
-    }
-
-    for (let i = 0; i < 6; i++) {
-      grid.push(
-        await this.drawLine(
-          new Two.Vector((i * center.x) / 3, 0),
-          new Two.Vector((i * center.x) / 3, this.scene.height),
-          pencilBrush,
-        ),
-      );
-    }
-
-    for (let i = 0; i < 5; i++) {
-      grid.push(
-        await this.drawLine(new Two.Vector((i + 1) * cellSize, 0), new Two.Vector(0, (i + 1) * cellSize), pencilBrush),
-      );
-    }
-
-    for (let i = 0; i < 5; i++) {
-      grid.push(
-        await this.drawLine(
-          new Two.Vector(0, (2 - i) * cellSize),
-          new Two.Vector((i + 1) * cellSize, 3 * cellSize),
-          pencilBrush,
-        ),
-      );
-    }
-
-    return grid;
   }
 
   private async cloneStar(cellSize: number): Promise<Two.Group> {
