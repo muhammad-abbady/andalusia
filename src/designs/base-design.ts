@@ -31,17 +31,25 @@ export abstract class BaseDesign {
 
     const circleTop = new Two.Vector(center.x, center.y - radius);
     const circleBottom = new Two.Vector(center.x, center.y + radius);
-    const animation1 = await this.drawCurve(center, circleTop, circleBottom, brush);
-    const animation2 = await this.drawCurve(center, circleBottom, circleTop, brush);
+    const topMarker = this.drawMarker(circleTop);
+
+    const animation1 = await this.drawCurve(center, circleTop, circleBottom, brush, false);
+    const animation2 = await this.drawCurve(center, circleBottom, circleTop, brush, false);
 
     const circle = this.scene.makeCircle(center.x, center.y, radius);
     brush.applyTo(circle);
 
-    this.removeAndUpdate(animation1, animation2);
+    this.removeAndUpdate(animation1, animation2, topMarker);
     return circle;
   }
 
-  protected async drawCurve(center: Two.Vector, from: Two.Vector, to: Two.Vector, brush: Brush): Promise<Two.Path> {
+  protected async drawCurve(
+    center: Two.Vector,
+    from: Two.Vector,
+    to: Two.Vector,
+    brush: Brush,
+    drawStartMarker = true,
+  ): Promise<Two.Path> {
     const radius = distanceBetweenTwoPoints(center, from);
     if (!areFloatsClose(radius, distanceBetweenTwoPoints(center, to))) {
       throw new Error("from and to are not equidistant from center.");
@@ -71,17 +79,19 @@ export abstract class BaseDesign {
     const angleIncrement = calculateAngle(to) / steps;
 
     for (let i = 1; i < steps; i++) {
-      const fromHighlight = this.drawMarker(from);
-
       const end = rotatePoint(from, center, angleIncrement * i);
-      const endHighlight = this.drawMarker(end);
+      const markers = [this.drawMarker(end)];
+
+      if (drawStartMarker) {
+        markers.push(this.drawMarker(from));
+      }
 
       const partialCurve = this.scene.makeCurve(calculatePoints(end), true);
       brush.applyTo(partialCurve);
 
       await this.sleep();
 
-      this.removeAndUpdate(partialCurve, fromHighlight, endHighlight);
+      this.removeAndUpdate(partialCurve, ...markers);
     }
 
     const fullCurve = this.scene.makeCurve(calculatePoints(to), true);
