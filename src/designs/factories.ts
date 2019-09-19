@@ -20,7 +20,7 @@ import { MoroccanMotifDesign } from "./implementations/moroccan-motif";
 export interface DesignFactory {
   readonly url: string;
   readonly title: string;
-  readonly attribution?: {
+  readonly attribution: {
     readonly author: string;
     readonly link: string;
   };
@@ -106,6 +106,10 @@ export const factories: ReadonlyArray<DesignFactory> = [
   {
     url: "/designs/intermingled-squares",
     title: "Ingermingled Squares",
+    attribution: {
+      author: "Andalusia",
+      link: "#",
+    },
     create: (scene, speed, token, shouldAnimate) => new IntermingledSquaresDesign(scene, speed, token, shouldAnimate),
   },
   {
